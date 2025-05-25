@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: iot-gateway
+
+# 串口服务器列表
+serial:
+  server-list:
+    - ip: 192.168.1.200
+      port: 4196
+#    - ip: 127.0.0.1
+#      port: 6668
+
+
+logging:
+  file:
+    name: ${spring.application.name}
+    path: d:\logs\
+
