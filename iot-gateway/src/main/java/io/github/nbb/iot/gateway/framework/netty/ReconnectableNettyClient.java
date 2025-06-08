@@ -36,6 +36,8 @@ public class ReconnectableNettyClient {
     private final ScheduledExecutorService reconnectExecutor;
     /** 是否正在重连 */
     private final AtomicBoolean isReconnecting = new AtomicBoolean(false);
+    /** 连接当前装备 */
+    private final AtomicBoolean isOnline = new AtomicBoolean(false);
     /** 已重连次数 */
     private final AtomicInteger reconnectAttempts = new AtomicInteger(0);
     /** 最大重连延迟时间(秒) */
@@ -57,6 +59,8 @@ public class ReconnectableNettyClient {
         b.group(group)
                 .channel(NioSocketChannel.class)
                 .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000) // 2秒超时
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
@@ -85,9 +89,11 @@ public class ReconnectableNettyClient {
             channel = future.channel();
 
             log.info("第【{}】次，连接串口服务器【{}:{}】成功", reconnectAttempts.get(), host, port);
+            isOnline.set(true);
             reconnectAttempts.set(0); // 重置重连计数
         } catch (Exception e) {
             log.error("第【{}】次，连接串口服务器【{}:{}】失败，报错信息为：【{}】；准备再次连接", reconnectAttempts.get(), host, port, e.getMessage());
+            isOnline.set(false);
             scheduleReconnect();
         }
     }
@@ -97,7 +103,13 @@ public class ReconnectableNettyClient {
     public void sendMessage(String message) {
         if (channel != null && channel.isActive()) {
             byte[] bytes = HexUtil.decodeHex(message);
-            channel.writeAndFlush(Unpooled.copiedBuffer(bytes));
+            channel.writeAndFlush(Unpooled.copiedBuffer(bytes)).addListener(future -> {
+                if (future.isSuccess()) {
+                    log.info("消息成功发送到串口服务器");
+                } else {
+                    log.error("消息发送到串口服务器失败");
+                }
+            });
             log.warn("发送消息给串口服务器【{}:{}】成功，消息内容为【{}】", host, port, message);
         } else {
             log.warn("串口服务器【{}:{}】的通道失去连接，无法发送消息", host, port);

@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package io.github.nbb.iot.grpcapi;
+
+// 服务定义
+service ConnectionService {
+  // 建立连接并保持心跳
+  rpc Connect(stream HeartbeatRequest) returns (stream HeartbeatResponse);
+
+  // 获取所有在线客户端
+  rpc GetOnlineClients(Empty) returns (ClientList);
+}
+
+// 心跳请求
+message HeartbeatRequest {
+  string clientId = 1;
+  string metadata = 2;
+}
+
+// 心跳响应
+message HeartbeatResponse {
+  int64 timestamp = 1;
+  string message = 2;
+}
+
+// 空消息
+message Empty {}
+
+// 客户端列表
+message ClientList {
+  repeated Client clients = 1;
+}
+
+// 客户端信息
+message Client {
+  string clientId = 1;
+  string lastSeen = 2;
+  string metadata = 3;
+  bool online = 4;
+}

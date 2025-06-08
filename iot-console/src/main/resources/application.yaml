@@ -1,0 +1,13 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: iot-console
+
+
+logging:
+  file:
+    name: ${spring.application.name}
+    path: d:\logs\
+
