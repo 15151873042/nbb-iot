@@ -13,6 +13,9 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -32,6 +35,8 @@ public class ReconnectableNettyClient {
     private NioEventLoopGroup group;
     private Channel channel;
     private final Bootstrap bootstrap;
+    /** 心跳线程 */
+    private final ScheduledExecutorService  heartbeatExecutor;
     /** 重连调度线程 */
     private final ScheduledExecutorService reconnectExecutor;
     /** 是否正在重连 */
@@ -49,6 +54,7 @@ public class ReconnectableNettyClient {
     public ReconnectableNettyClient(SerialServerInfo serialServerInfo) {
         this.host = serialServerInfo.getIp();
         this.port = serialServerInfo.getPort();
+        heartbeatExecutor = Executors.newSingleThreadScheduledExecutor();
         this.reconnectExecutor = Executors.newSingleThreadScheduledExecutor();
         this.bootstrap = createBootstrap();
     }
@@ -74,7 +80,21 @@ public class ReconnectableNettyClient {
         return b;
     }
 
+    public void init() {
+        start();
+        startHeartbeat();
+    }
 
+    private void startHeartbeat() {
+        heartbeatExecutor.scheduleAtFixedRate(() -> {
+            try (Socket socket = new Socket()) {
+                socket.connect(new InetSocketAddress(host, port), 2000);
+                isOnline.set(true);
+            } catch (IOException e) {
+                isOnline.set(false);
+            }
+        }, 5, 5, TimeUnit.SECONDS);
+    }
 
 
     // 启动客户端

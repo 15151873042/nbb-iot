@@ -24,7 +24,7 @@ public class GatewayApplicationRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         for (SerialServerInfo serialServerInfo : serverProperties.getServerList()) {
             ReconnectableNettyClient nettyClient = new ReconnectableNettyClient(serialServerInfo);
-            nettyClient.start();
+            nettyClient.init();
             info2Client.put(serialServerInfo, nettyClient);
         }
     }
