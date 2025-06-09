@@ -54,9 +54,13 @@ public class ReconnectableNettyClient {
     public ReconnectableNettyClient(SerialServerInfo serialServerInfo) {
         this.host = serialServerInfo.getIp();
         this.port = serialServerInfo.getPort();
-        heartbeatExecutor = Executors.newSingleThreadScheduledExecutor();
+        this.heartbeatExecutor = Executors.newSingleThreadScheduledExecutor();
         this.reconnectExecutor = Executors.newSingleThreadScheduledExecutor();
         this.bootstrap = createBootstrap();
+
+        this.startConnect();
+        this.startHeartbeat();
+
     }
 
     private Bootstrap createBootstrap() {
@@ -81,7 +85,7 @@ public class ReconnectableNettyClient {
     }
 
     public void init() {
-        start();
+        startConnect();
         startHeartbeat();
     }
 
@@ -98,7 +102,7 @@ public class ReconnectableNettyClient {
 
 
     // 启动客户端
-    public synchronized void start() {
+    public synchronized void startConnect() {
         if (channel != null && channel.isActive()) {
             return;
         }
@@ -133,7 +137,7 @@ public class ReconnectableNettyClient {
             log.warn("发送消息给串口服务器【{}:{}】成功，消息内容为【{}】", host, port, message);
         } else {
             log.warn("串口服务器【{}:{}】的通道失去连接，无法发送消息", host, port);
-            start(); // 尝试重连
+            startConnect(); // 尝试重连
         }
     }
 
@@ -168,7 +172,7 @@ public class ReconnectableNettyClient {
         reconnectFuture = reconnectExecutor.schedule(() -> {
             try {
                 log.info("第【{}】次，正在重连串口服务器【{}:{}】，连接中。。。。", attempts, host, port);
-                start(); // 尝试重连
+                startConnect(); // 尝试重连
             } finally {
                 isReconnecting.set(false);
                 reconnectFuture = null; // 清空句柄

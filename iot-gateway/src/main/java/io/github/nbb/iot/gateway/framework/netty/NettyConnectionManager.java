@@ -1,35 +1,38 @@
-package io.github.nbb.iot.gateway.framework.boot;
+package io.github.nbb.iot.gateway.framework.netty;
 
-import io.github.nbb.iot.gateway.framework.netty.ReconnectableNettyClient;
 import io.github.nbb.iot.gateway.properties.SerialServerProperties;
 import io.github.nbb.iot.gateway.properties.SerialServerProperties.SerialServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Slf4j
-public class GatewayApplicationRunner implements ApplicationRunner {
+public class NettyConnectionManager {
 
-    @Autowired
-    SerialServerProperties serverProperties;
+    Map<SerialServerInfo, ReconnectableNettyClient> connections = new ConcurrentHashMap<>();
 
-    private ConcurrentHashMap<SerialServerInfo, ReconnectableNettyClient> info2Client = new ConcurrentHashMap<>();
 
-    @Override
-    public void run(ApplicationArguments args) {
+    final SerialServerProperties serverProperties;
+
+    public NettyConnectionManager(SerialServerProperties serverProperties) {
+        this.serverProperties = serverProperties;
+    }
+
+    @PostConstruct
+    public void init() {
         for (SerialServerInfo serialServerInfo : serverProperties.getServerList()) {
             ReconnectableNettyClient nettyClient = new ReconnectableNettyClient(serialServerInfo);
-            nettyClient.init();
-            info2Client.put(serialServerInfo, nettyClient);
+            connections.put(serialServerInfo, nettyClient);
         }
     }
 
     public void sendMessage(SerialServerInfo serialServerInfo, String message) {
-        info2Client.get(serialServerInfo).sendMessage(message);
+        connections.get(serialServerInfo).sendMessage(message);
     }
 }
