@@ -5,6 +5,9 @@ spring:
   application:
     name: iot-gateway
 
+iot-gateway:
+  client-id: iot-gateway-01
+
 # 串口服务器列表
 serial:
   server-list:

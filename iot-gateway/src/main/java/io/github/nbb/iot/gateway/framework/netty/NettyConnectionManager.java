@@ -1,38 +1,35 @@
 package io.github.nbb.iot.gateway.framework.netty;
 
-import io.github.nbb.iot.gateway.properties.SerialServerProperties;
-import io.github.nbb.iot.gateway.properties.SerialServerProperties.SerialServerInfo;
+import io.github.nbb.iot.common.domain.SerialServerDO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 public class NettyConnectionManager {
 
-    Map<SerialServerInfo, ReconnectableNettyClient> connections = new ConcurrentHashMap<>();
+    Map<SerialServerDO, ReconnectableNettyClient> connections = new ConcurrentHashMap<>();
 
+    public synchronized void reload(List<SerialServerDO> serialServerList) {
+        // 需要关闭的Client
+        this.connections.entrySet().stream()
+                .filter(item -> !serialServerList.contains(item.getKey()))
+                .map(Map.Entry::getValue)
+                .forEach(item -> item.shutdown());
 
-    final SerialServerProperties serverProperties;
-
-    public NettyConnectionManager(SerialServerProperties serverProperties) {
-        this.serverProperties = serverProperties;
+        // 构建新的Connection
+        Map<SerialServerDO, ReconnectableNettyClient> newConnections = serialServerList.stream()
+                .collect(Collectors.toMap(item -> item, item -> this.connections.getOrDefault(item, new ReconnectableNettyClient(item))));
+        this.connections = newConnections;
     }
 
-    @PostConstruct
-    public void init() {
-        for (SerialServerInfo serialServerInfo : serverProperties.getServerList()) {
-            ReconnectableNettyClient nettyClient = new ReconnectableNettyClient(serialServerInfo);
-            connections.put(serialServerInfo, nettyClient);
-        }
-    }
 
-    public void sendMessage(SerialServerInfo serialServerInfo, String message) {
+    public void sendMessage(SerialServerDO serialServerInfo, String message) {
         connections.get(serialServerInfo).sendMessage(message);
     }
 }

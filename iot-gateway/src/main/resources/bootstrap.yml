@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      username: nacos
+      password: nacos
+      config:
+        enabled: true
+        namespace: iot
+        group: DEFAULT_GROUP
+      discovery:
+        enabled: true
+        namespace: iot
+        group: DEFAULT_GROUP
+        metadata:
+          client-id: ${iot-gateway.client-id}

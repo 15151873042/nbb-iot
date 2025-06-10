@@ -1,7 +1,7 @@
 package io.github.nbb.iot.gateway.framework.netty;
 
 import cn.hutool.core.util.HexUtil;
-import io.github.nbb.iot.gateway.properties.SerialServerProperties.SerialServerInfo;
+import io.github.nbb.iot.common.domain.SerialServerDO;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -9,14 +9,11 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -51,8 +48,8 @@ public class ReconnectableNettyClient {
     private ScheduledFuture<?> reconnectFuture; // 记录重连任务句柄
 
 
-    public ReconnectableNettyClient(SerialServerInfo serialServerInfo) {
-        this.host = serialServerInfo.getIp();
+    public ReconnectableNettyClient(SerialServerDO serialServerInfo) {
+        this.host = serialServerInfo.getHost();
         this.port = serialServerInfo.getPort();
         this.heartbeatExecutor = Executors.newSingleThreadScheduledExecutor();
         this.reconnectExecutor = Executors.newSingleThreadScheduledExecutor();
