@@ -164,12 +164,14 @@ getCookie()
 </script>
 
 <style lang='scss' scoped>
+$bg:#2d3a4b;
+
 .login {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../assets/images/login-background.jpg");
+  background-color: $bg;
   background-size: cover;
 }
 .title {

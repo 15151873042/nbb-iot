@@ -63,6 +63,11 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>io.github.nbb.iot</groupId>
+            <artifactId>iot-grpc-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <dependency>
             <groupId>io.github.nbb.iot</groupId>
@@ -109,11 +114,39 @@
             <optional>true</optional> <!-- 可选，不影响运行时 -->
         </dependency>
 
+        <!-- 验证码滑动验证 -->
+        <!-- https://ajcaptcha.beliefteam.cn/captcha-doc/captchaDoc/java.html#springboot -->
         <dependency>
-            <groupId>io.github.nbb.iot</groupId>
-            <artifactId>iot-grpc-api</artifactId>
-            <version>1.0.0</version>
+            <groupId>com.anji-plus</groupId>
+            <artifactId>captcha-spring-boot-starter</artifactId>
+            <version>1.4.0</version>
         </dependency>
+
+        <!-- Sa-Token 权限认证, 在线文档：https://sa-token.cc/ -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>1.34.0</version>
+        </dependency>
+        <!-- Sa-Token 插件：整合redis (使用jackson序列化方式) -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-dao-redis-jackson</artifactId>
+            <version>1.34.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- Sa-Token插件：权限缓存与业务缓存分离 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-alone-redis</artifactId>
+            <version>1.34.0</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>

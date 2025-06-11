@@ -2,18 +2,12 @@
 
 <configuration debug="false" scan="true" scanPeriod="60 seconds">
 
-    <!-- 配置名称在LoggingSystemProperties中 -->
+    <!-- ${LOG_PATH}以及${LOG_FILE}配置名称在LoggingSystemProperties中 -->
 
-    <!-- 日志名称 -->
-<!--    <property name="log.app_name" value="${spring.application.name}"/>-->
-    <springProperty scope="context" name="log.app_name" source="logging.file.name"/>
-    <!-- 日志输出位置 -->
-<!--    <property name="log.home_dir" value="${logging.file.path:-./logs}"></property>-->
-    <springProperty scope="context" name="log.home_dir" source="logging.file.path"/>
     <!-- 日志最大保留天数 -->
     <property name="log.max_history" value="30"></property>
     <!-- 日志文件最大的大小 -->
-    <property name="log.max_size" value="500MB"></property>
+    <property name="log.max_size" value="50MB"></property>
     <!-- 日志输出格式 -->
     <property name="log.pattern" value="%-20(%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]) %-5level %logger{80}[%L] - %msg%n"></property>
     <property name="log.pattern.console" value="%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger) - %cyan(%msg%n)"/>
@@ -35,9 +29,9 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
         </filter>
-        <file>${log.home_dir}/${log.app_name}-all.log</file>
+        <file>${LOG_PATH}/${LOG_FILE}-all.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.home_dir}/${log.app_name}-all.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE}-all.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
             <maxFileSize>${log.max_size}</maxFileSize>
             <maxHistory>${log.max_history}</maxHistory>
         </rollingPolicy>
@@ -52,9 +46,9 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
-        <file>${log.home_dir}/${log.app_name}-error.log</file>
+        <file>${LOG_PATH}/${LOG_FILE}-error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.home_dir}/${log.app_name}-error.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE}-error.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
             <maxFileSize>${log.max_size}</maxFileSize>
             <maxHistory>${log.max_history}</maxHistory>
         </rollingPolicy>
