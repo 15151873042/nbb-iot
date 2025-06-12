@@ -11,3 +11,7 @@ logging:
     name: ${spring.application.name}
     path: d:\logs\
 
+# 滑动验证码数据存储在redis
+aj:
+  captcha:
+    cache-type: redis
