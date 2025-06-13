@@ -1,9 +1,18 @@
+nbb:
+  # 验证码类型 math 数字计算 char 字符验证
+  captcha-type: math
+
 server:
   port: 8090
 
 spring:
   application:
     name: iot-console
+  redis:
+    host: localhost
+    port: 6379
+    database: 9
+    password: root
 
 
 logging:
@@ -11,7 +20,3 @@ logging:
     name: ${spring.application.name}
     path: d:\logs\
 
-# 滑动验证码数据存储在redis
-aj:
-  captcha:
-    cache-type: redis
