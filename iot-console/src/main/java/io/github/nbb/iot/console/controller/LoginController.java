@@ -1,0 +1,77 @@
+package io.github.nbb.iot.console.controller;
+
+import cn.dev33.satoken.stp.StpUtil;
+import com.alibaba.nacos.api.common.Constants;
+import io.github.nbb.iot.console.core.domain.AjaxResult;
+import io.github.nbb.iot.console.core.domain.LoginUser;
+import io.github.nbb.iot.console.core.domain.dto.LoginDTO;
+import io.github.nbb.iot.console.core.domain.entity.SysMenu;
+import io.github.nbb.iot.console.service.LoginService;
+import io.github.nbb.iot.console.service.SysMenuService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import io.github.nbb.iot.console.util.SecurityUtils;
+
+import java.util.List;
+
+@RestController
+public class LoginController {
+
+    @Autowired
+    private LoginService loginService;
+
+    @Autowired
+    private SysMenuService menuService;
+
+
+    /**
+     * 登录方法
+     *
+     * @param loginDTO 登录信息
+     * @return 结果
+     */
+    @PostMapping("/login")
+    public AjaxResult login(@RequestBody LoginDTO loginDTO) {
+        String token = loginService.login(loginDTO);
+
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put(Constants.TOKEN, token);
+        return ajax;
+    }
+
+    @DeleteMapping("logout")
+    public AjaxResult logout() {
+        StpUtil.logout();
+        return AjaxResult.success();
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @return 用户信息
+     */
+    @GetMapping("/getInfo")
+    public AjaxResult getInfo() {
+        LoginUser loginUser = SecurityUtils.getLoginUser().get();
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("user", loginUser.getSysUser());
+        ajax.put("roles", loginUser.getRoles());
+        ajax.put("permissions", loginUser.getPermissions());
+        return ajax;
+    }
+
+
+    /**
+     * 获取路由信息
+     *
+     * @return 路由信息
+     */
+    @GetMapping("getRouters")
+    public AjaxResult getRouters()
+    {
+        Long userId = SecurityUtils.getUserId().get();
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
+        return AjaxResult.success(menuService.buildMenus(menus));
+    }
+}
