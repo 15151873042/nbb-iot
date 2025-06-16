@@ -1,8 +1,8 @@
-package io.github.nbb.iot.console.core.domain.entity;
+package io.github.nbb.iot.console.domain.entity;
 
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.github.nbb.iot.console.core.domain.BaseEntity;
+import io.github.nbb.iot.console.domain.BaseEntity;
 
 import java.util.Date;
 import java.util.List;

@@ -1,7 +1,7 @@
-package io.github.nbb.iot.console.core.domain.entity;
+package io.github.nbb.iot.console.domain.entity;
 
 
-import io.github.nbb.iot.console.core.domain.BaseEntity;
+import io.github.nbb.iot.console.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

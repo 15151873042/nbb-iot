@@ -1,4 +1,4 @@
-package io.github.nbb.iot.console.core.domain.vo;
+package io.github.nbb.iot.console.domain.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

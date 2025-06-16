@@ -1,8 +1,8 @@
-package io.github.nbb.iot.console.core.domain;
+package io.github.nbb.iot.console.domain;
 
 
 
-import io.github.nbb.iot.console.core.domain.entity.SysUser;
+import io.github.nbb.iot.console.domain.entity.SysUser;
 
 import java.io.Serializable;
 import java.util.Set;

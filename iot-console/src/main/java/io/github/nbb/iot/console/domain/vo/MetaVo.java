@@ -1,10 +1,10 @@
-package io.github.nbb.iot.console.core.domain.vo;
+package io.github.nbb.iot.console.domain.vo;
 
 import cn.hutool.core.util.StrUtil;
 
 /**
  * 路由显示信息
- * 
+ *
  * @author ruoyi
  */
 public class MetaVo

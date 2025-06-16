@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.nbb.iot.console.mapper.SysUserMapper">
 
-    <resultMap type="io.github.nbb.iot.console.core.domain.entity.SysUser" id="SysUserResult">
+    <resultMap type="io.github.nbb.iot.console.domain.entity.SysUser" id="SysUserResult">
         <id     property="id"       column="id"      />
         <result property="deptId"       column="dept_id"      />
         <result property="userName"     column="user_name"    />
@@ -23,11 +23,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"     column="update_by"    />
         <result property="updateTime"   column="update_time"  />
         <result property="remark"       column="remark"       />
-        <association property="dept"    javaType="io.github.nbb.iot.console.core.domain.entity.SysDept" resultMap="deptResult" />
+        <association property="dept" javaType="io.github.nbb.iot.console.domain.entity.SysDept" resultMap="deptResult" />
         <collection  property="roles"   javaType="java.util.List"  resultMap="RoleResult" />
     </resultMap>
-	
-    <resultMap id="deptResult" type="io.github.nbb.iot.console.core.domain.entity.SysDept">
+
+    <resultMap id="deptResult" type="io.github.nbb.iot.console.domain.entity.SysDept">
         <id     property="id"    column="dept_id"     />
         <result property="parentId"  column="parent_id"   />
         <result property="deptName"  column="dept_name"   />
@@ -36,8 +36,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="leader"    column="leader"      />
         <result property="status"    column="dept_status" />
     </resultMap>
-	
-    <resultMap id="RoleResult" type="io.github.nbb.iot.console.core.domain.entity.SysRole">
+
+    <resultMap id="RoleResult" type="io.github.nbb.iot.console.domain.entity.SysRole">
         <id     property="id"       column="role_id"        />
         <result property="roleName"     column="role_name"      />
         <result property="roleKey"      column="role_key"       />
@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dataScope"    column="data_scope"     />
         <result property="status"       column="role_status"    />
     </resultMap>
-	
+
 	<sql id="selectUserVo">
         select u.id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
         d.id as dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,

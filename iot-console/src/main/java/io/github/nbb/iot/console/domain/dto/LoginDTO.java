@@ -1,4 +1,4 @@
-package io.github.nbb.iot.console.core.domain.dto;
+package io.github.nbb.iot.console.domain.dto;
 
 /**
  * 用户登录对象

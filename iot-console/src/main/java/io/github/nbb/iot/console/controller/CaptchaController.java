@@ -4,7 +4,7 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.IdUtil;
 import com.google.code.kaptcha.Producer;
 import io.github.nbb.iot.console.constant.CacheConstants;
-import io.github.nbb.iot.console.core.domain.AjaxResult;
+import io.github.nbb.iot.console.domain.AjaxResult;
 import io.github.nbb.iot.console.framework.redis.RedisCache;
 import io.github.nbb.iot.console.properties.NbbConfig;
 import org.springframework.beans.factory.annotation.Autowired;

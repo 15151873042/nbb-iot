@@ -1,7 +1,7 @@
 package io.github.nbb.iot.console.service;
 
 
-import io.github.nbb.iot.console.core.domain.entity.SysUser;
+import io.github.nbb.iot.console.domain.entity.SysUser;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package io.github.nbb.iot.console.core.domain;
+package io.github.nbb.iot.console.domain;
 
 
 import cn.hutool.core.util.ObjectUtil;

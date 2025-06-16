@@ -1,7 +1,7 @@
 package io.github.nbb.iot.console.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.github.nbb.iot.console.core.domain.entity.SysRole;
+import io.github.nbb.iot.console.domain.entity.SysRole;
 import io.github.nbb.iot.console.mapper.SysRoleMapper;
 import io.github.nbb.iot.console.service.SysRoleService;
 import org.springframework.stereotype.Service;

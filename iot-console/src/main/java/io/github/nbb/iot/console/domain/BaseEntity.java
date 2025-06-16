@@ -1,4 +1,4 @@
-package io.github.nbb.iot.console.core.domain;
+package io.github.nbb.iot.console.domain;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 /**
  * Entity基类
- * 
+ *
  */
 @Data
 public class BaseEntity implements Serializable

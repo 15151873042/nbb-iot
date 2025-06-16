@@ -1,8 +1,8 @@
 package io.github.nbb.iot.console.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import io.github.nbb.iot.console.core.domain.entity.SysRole;
-import io.github.nbb.iot.console.core.domain.entity.SysUser;
+import io.github.nbb.iot.console.domain.entity.SysRole;
+import io.github.nbb.iot.console.domain.entity.SysUser;
 import io.github.nbb.iot.console.service.SysMenuService;
 import io.github.nbb.iot.console.service.SysPermissionService;
 import io.github.nbb.iot.console.service.SysRoleService;

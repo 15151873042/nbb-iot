@@ -2,7 +2,7 @@ package io.github.nbb.iot.console.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.github.nbb.iot.console.core.domain.entity.SysRole;
+import io.github.nbb.iot.console.domain.entity.SysRole;
 
 import java.util.List;
 

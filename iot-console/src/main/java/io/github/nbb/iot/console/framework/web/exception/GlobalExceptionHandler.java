@@ -2,7 +2,7 @@ package io.github.nbb.iot.console.framework.web.exception;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
-import io.github.nbb.iot.console.core.domain.AjaxResult;
+import io.github.nbb.iot.console.domain.AjaxResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;

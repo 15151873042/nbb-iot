@@ -2,8 +2,8 @@ package io.github.nbb.iot.console.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.github.nbb.iot.console.core.domain.entity.SysMenu;
-import io.github.nbb.iot.console.core.domain.vo.RouterVo;
+import io.github.nbb.iot.console.domain.entity.SysMenu;
+import io.github.nbb.iot.console.domain.vo.RouterVo;
 
 import java.util.List;
 import java.util.Set;

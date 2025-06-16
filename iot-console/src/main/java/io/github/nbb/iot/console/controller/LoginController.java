@@ -1,12 +1,11 @@
 package io.github.nbb.iot.console.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.alibaba.nacos.api.common.Constants;
-import io.github.nbb.iot.console.core.domain.AjaxResult;
-import io.github.nbb.iot.console.core.domain.LoginUser;
-import io.github.nbb.iot.console.core.domain.dto.LoginDTO;
-import io.github.nbb.iot.console.core.domain.entity.SysMenu;
-import io.github.nbb.iot.console.core.domain.vo.LoginVO;
+import io.github.nbb.iot.console.domain.AjaxResult;
+import io.github.nbb.iot.console.domain.LoginUser;
+import io.github.nbb.iot.console.domain.dto.LoginDTO;
+import io.github.nbb.iot.console.domain.entity.SysMenu;
+import io.github.nbb.iot.console.domain.vo.LoginVO;
 import io.github.nbb.iot.console.service.LoginService;
 import io.github.nbb.iot.console.service.SysMenuService;
 import io.github.nbb.iot.console.util.SecurityUtils;

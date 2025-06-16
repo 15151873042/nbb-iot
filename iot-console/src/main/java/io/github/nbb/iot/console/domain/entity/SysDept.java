@@ -1,7 +1,7 @@
-package io.github.nbb.iot.console.core.domain.entity;
+package io.github.nbb.iot.console.domain.entity;
 
 
-import io.github.nbb.iot.console.core.domain.BaseEntity;
+import io.github.nbb.iot.console.domain.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;

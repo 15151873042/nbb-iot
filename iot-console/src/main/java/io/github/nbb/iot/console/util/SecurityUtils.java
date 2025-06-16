@@ -4,7 +4,7 @@ package io.github.nbb.iot.console.util;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
-import io.github.nbb.iot.console.core.domain.LoginUser;
+import io.github.nbb.iot.console.domain.LoginUser;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;

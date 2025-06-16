@@ -1,11 +1,11 @@
 package io.github.nbb.iot.console.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.github.nbb.iot.console.core.domain.entity.SysUser;
+import io.github.nbb.iot.console.domain.entity.SysUser;
 
 /**
  * 用户表 数据层
- * 
+ *
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
