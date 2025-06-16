@@ -7,6 +7,7 @@ import io.github.nbb.iot.console.constant.CacheConstants;
 import io.github.nbb.iot.console.core.domain.LoginUser;
 import io.github.nbb.iot.console.core.domain.dto.LoginDTO;
 import io.github.nbb.iot.console.core.domain.entity.SysUser;
+import io.github.nbb.iot.console.core.domain.vo.LoginVO;
 import io.github.nbb.iot.console.exception.CaptchaException;
 import io.github.nbb.iot.console.exception.CaptchaExpireException;
 import io.github.nbb.iot.console.framework.redis.RedisCache;
@@ -40,7 +41,7 @@ public class LoginService {
      * 登录验证
      * @return 结果
      */
-    public String login(LoginDTO loginDTO) {
+    public LoginVO login(LoginDTO loginDTO) {
         // 验证码校验
         validateCaptcha(loginDTO.getUsername(), loginDTO.getCode(), loginDTO.getUuid());
 
@@ -69,7 +70,7 @@ public class LoginService {
         session.set(SaSession.PERMISSION_LIST, permissions);
 
         String tokenValue = StpUtil.getTokenValue();
-        return tokenValue;
+        return new LoginVO(tokenValue);
     }
 
     /**

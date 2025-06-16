@@ -26,8 +26,10 @@ const useUserStore = defineStore(
         const uuid = userInfo.uuid
         return new Promise((resolve, reject) => {
           login(username, password, code, uuid).then(res => {
-            setToken(res.token)
-            this.token = res.token
+            debugger
+            const { data } = res
+            setToken(data.token)
+            this.token = data.token
             resolve()
           }).catch(error => {
             reject(error)

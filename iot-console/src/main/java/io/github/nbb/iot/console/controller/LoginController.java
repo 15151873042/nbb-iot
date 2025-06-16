@@ -6,12 +6,12 @@ import io.github.nbb.iot.console.core.domain.AjaxResult;
 import io.github.nbb.iot.console.core.domain.LoginUser;
 import io.github.nbb.iot.console.core.domain.dto.LoginDTO;
 import io.github.nbb.iot.console.core.domain.entity.SysMenu;
+import io.github.nbb.iot.console.core.domain.vo.LoginVO;
 import io.github.nbb.iot.console.service.LoginService;
 import io.github.nbb.iot.console.service.SysMenuService;
+import io.github.nbb.iot.console.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import io.github.nbb.iot.console.util.SecurityUtils;
 
 import java.util.List;
 
@@ -33,14 +33,11 @@ public class LoginController {
      */
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginDTO loginDTO) {
-        String token = loginService.login(loginDTO);
-
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put(Constants.TOKEN, token);
-        return ajax;
+        LoginVO vo = loginService.login(loginDTO);
+        return AjaxResult.success(vo);
     }
 
-    @DeleteMapping("logout")
+    @PostMapping("logout")
     public AjaxResult logout() {
         StpUtil.logout();
         return AjaxResult.success();
@@ -68,8 +65,7 @@ public class LoginController {
      * @return 路由信息
      */
     @GetMapping("getRouters")
-    public AjaxResult getRouters()
-    {
+    public AjaxResult getRouters() {
         Long userId = SecurityUtils.getUserId().get();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
         return AjaxResult.success(menuService.buildMenus(menus));

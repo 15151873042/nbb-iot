@@ -36,13 +36,13 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<SysMenu> selectMenuTreeByUserId(Long userId) {
-        List<SysMenu> menus = null;
+        List<SysMenu> menus;
         if (SecurityUtils.isAdmin(userId)) {
             menus = getBaseMapper().selectMenuTreeAll();
         } else {
             menus = getBaseMapper().selectMenuTreeByUserId(userId);
         }
-        return getChildPerms(menus, 0);
+        return getChildPerms(menus, 0L);
     }
 
     @Override
@@ -99,17 +99,11 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      * @param parentId 传入的父节点ID
      * @return String
      */
-    public List<SysMenu> getChildPerms(List<SysMenu> list, int parentId) {
-        List<SysMenu> returnList = new ArrayList<SysMenu>();
-        for (Iterator<SysMenu> iterator = list.iterator(); iterator.hasNext(); ) {
-            SysMenu t = (SysMenu) iterator.next();
-            // 一、根据传入的某个父节点ID,遍历该父节点的所有子节点
-            if (t.getParentId() == parentId) {
-                recursionFn(list, t);
-                returnList.add(t);
-            }
-        }
-        return returnList;
+    public List<SysMenu> getChildPerms(List<SysMenu> list, Long parentId) {
+        return list.stream()
+                .filter(item -> item.getParentId().equals(parentId))
+                .peek(item -> recursionFn(list, item))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -133,22 +127,16 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      * 判断是否有子节点
      */
     private boolean hasChild(List<SysMenu> list, SysMenu t) {
-        return getChildList(list, t).size() > 0;
+        return this.getChildList(list, t).size() > 0;
     }
 
     /**
      * 得到子节点列表
      */
     private List<SysMenu> getChildList(List<SysMenu> list, SysMenu t) {
-        List<SysMenu> tlist = new ArrayList<SysMenu>();
-        Iterator<SysMenu> it = list.iterator();
-        while (it.hasNext()) {
-            SysMenu n = (SysMenu) it.next();
-            if (n.getParentId().longValue() == t.getParentId().longValue()) {
-                tlist.add(n);
-            }
-        }
-        return tlist;
+        return list.stream()
+                .filter(item -> item.getParentId().equals(t.getId()))
+                .collect(Collectors.toList());
     }
 
     /**
