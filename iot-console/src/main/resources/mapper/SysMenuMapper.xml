@@ -5,7 +5,7 @@
 <mapper namespace="io.github.nbb.iot.console.mapper.SysMenuMapper">
 
 	<resultMap type="io.github.nbb.iot.console.domain.entity.SysMenu" id="SysMenuResult">
-		<id     property="id"         column="id"        />
+		<id		property="id"			  column="id"        />
 		<result property="menuName"       column="menu_name"      />
 		<result property="parentName"     column="parent_name"    />
 		<result property="parentId"       column="parent_id"      />
@@ -85,12 +85,16 @@
 	</select>
 
 	<select id="selectMenuListByRoleId" resultType="Long">
-		select m.menu_id
-		from sys_menu m
-            left join sys_role_menu rm on m.menu_id = rm.menu_id
-        where rm.role_id = #{roleId}
+		select
+		    m.id
+		from
+		    sys_menu m
+        left join
+		    sys_role_menu rm on m.id = rm.menu_id
+        where
+            rm.role_id = #{roleId}
             <if test="menuCheckStrictly">
-              and m.menu_id not in (select m.parent_id from sys_menu m inner join sys_role_menu rm on m.menu_id = rm.menu_id and rm.role_id = #{roleId})
+              and m.id not in (select m.parent_id from sys_menu m inner join sys_role_menu rm on m.id = rm.menu_id and rm.role_id = #{roleId})
             </if>
 		order by m.parent_id, m.order_num
 	</select>
@@ -120,7 +124,7 @@
 
 	<select id="selectMenuById" parameterType="Long" resultMap="SysMenuResult">
 		<include refid="selectMenuVo"/>
-		where menu_id = #{menuId}
+		where id = #{id}
 	</select>
 
 	<select id="hasChildByMenuId" resultType="Integer">
@@ -152,12 +156,12 @@
 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
 			update_time = sysdate()
 		</set>
-		where menu_id = #{menuId}
+		where id = #{id}
 	</update>
 
 	<insert id="insertMenu" parameterType="SysMenu">
 		insert into sys_menu(
-		<if test="menuId != null and menuId != 0">menu_id,</if>
+		<if test="id != null and id != 0">id,</if>
 		<if test="parentId != null and parentId != 0">parent_id,</if>
 		<if test="menuName != null and menuName != ''">menu_name,</if>
 		<if test="orderNum != null">order_num,</if>

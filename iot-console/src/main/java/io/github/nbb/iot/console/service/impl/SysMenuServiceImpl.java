@@ -1,17 +1,23 @@
 package io.github.nbb.iot.console.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.nbb.iot.console.constant.Constants;
 import io.github.nbb.iot.console.constant.UserConstants;
+import io.github.nbb.iot.console.domain.TreeSelect;
 import io.github.nbb.iot.console.domain.entity.SysMenu;
+import io.github.nbb.iot.console.domain.entity.SysRole;
 import io.github.nbb.iot.console.domain.vo.MetaVo;
 import io.github.nbb.iot.console.domain.vo.RouterVo;
 import io.github.nbb.iot.console.mapper.SysMenuMapper;
+import io.github.nbb.iot.console.mapper.SysRoleMapper;
+import io.github.nbb.iot.console.mapper.SysRoleMenuMapper;
 import io.github.nbb.iot.console.service.SysMenuService;
 import io.github.nbb.iot.console.util.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,6 +30,13 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
+
+    @Autowired
+    private SysRoleMapper roleMapper;
+
+    @Autowired
+    private SysRoleMenuMapper roleMenuMapper;
+
     @Override
     public Set<String> selectMenuPermsByRoleId(Long roleId) {
         List<String> perms = this.getBaseMapper().selectMenuPermsByRoleId(roleId);
@@ -89,6 +102,96 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             routers.add(router);
         }
         return routers;
+    }
+
+    @Override
+    public List<SysMenu> selectMenuList(Long userId) {
+        return this.selectMenuList(new SysMenu(), userId);
+    }
+
+    @Override
+    public List<SysMenu> selectMenuList(SysMenu menu, Long userId) {
+        List<SysMenu> menuList;
+        // 管理员显示所有菜单信息
+        if (SecurityUtils.isAdmin(userId)) {
+            menuList = this.getBaseMapper().selectMenuList(menu);
+        } else {
+            menu.getParams().put("userId", userId);
+            menuList = this.getBaseMapper().selectMenuListByUserId(menu);
+        }
+        return menuList;
+    }
+
+    @Override
+    public SysMenu selectMenuById(Long id) {
+        return getBaseMapper().selectMenuById(id);
+    }
+
+    @Override
+    public List<TreeSelect> buildMenuTreeSelect(List<SysMenu> menus) {
+        List<SysMenu> menuTrees = buildMenuTree(menus);
+        return menuTrees.stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SysMenu> buildMenuTree(List<SysMenu> menus) {
+        List<SysMenu> returnList = new ArrayList<SysMenu>();
+        List<Long> tempList = menus.stream().map(SysMenu::getId).collect(Collectors.toList());
+        for (Iterator<SysMenu> iterator = menus.iterator(); iterator.hasNext(); ) {
+            SysMenu menu = (SysMenu) iterator.next();
+            // 如果是顶级节点, 遍历该父节点的所有子节点
+            if (!tempList.contains(menu.getParentId())) {
+                recursionFn(menus, menu);
+                returnList.add(menu);
+            }
+        }
+        if (returnList.isEmpty()) {
+            returnList = menus;
+        }
+        return returnList;
+    }
+
+    @Override
+    public List<Long> selectMenuListByRoleId(Long roleId) {
+        SysRole role = roleMapper.selectRoleById(roleId);
+        return getBaseMapper().selectMenuListByRoleId(roleId, role.isMenuCheckStrictly());
+    }
+
+    @Override
+    public boolean checkMenuNameUnique(SysMenu menu) {
+        Long menuId = ObjectUtil.isNull(menu.getId()) ? -1L : menu.getId();
+        SysMenu info = getBaseMapper().checkMenuNameUnique(menu.getMenuName(), menu.getParentId());
+        if (ObjectUtil.isNotNull(info) && info.getId().longValue() != menuId.longValue()) {
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
+    }
+
+    @Override
+    public int insertMenu(SysMenu menu) {
+        return getBaseMapper().insertMenu(menu);
+    }
+
+    @Override
+    public int updateMenu(SysMenu menu) {
+        return getBaseMapper().updateMenu(menu);
+    }
+
+    @Override
+    public boolean hasChildByMenuId(Long menuId) {
+        int result = getBaseMapper().hasChildByMenuId(menuId);
+        return result > 0;
+    }
+
+    @Override
+    public boolean checkMenuExistRole(Long menuId) {
+        int result = roleMenuMapper.checkMenuExistRole(menuId);
+        return result > 0;
+    }
+
+    @Override
+    public int deleteMenuById(Long menuId) {
+        return getBaseMapper().deleteMenuById(menuId);
     }
 
 

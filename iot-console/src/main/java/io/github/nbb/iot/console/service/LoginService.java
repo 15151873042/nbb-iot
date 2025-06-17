@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -60,14 +61,15 @@ public class LoginService {
         loginUser.setRoles(roles);
         loginUser.setPermissions(permissions);
 
-        // 密码校验
+        // TODO 密码校验
 
         // 用户登陆
         StpUtil.login(sysUser.getId());
         // 用户信息放入session
         SaSession session = StpUtil.getSession();
         session.set(SaSession.USER, loginUser);
-        session.set(SaSession.PERMISSION_LIST, permissions);
+        session.set(SaSession.ROLE_LIST, new ArrayList<>(roles));
+        session.set(SaSession.PERMISSION_LIST, new ArrayList<>(permissions));
 
         String tokenValue = StpUtil.getTokenValue();
         return new LoginVO(tokenValue);

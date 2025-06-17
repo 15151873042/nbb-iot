@@ -79,10 +79,10 @@ public interface SysMenuMapper extends BaseMapper<SysMenu>
     /**
      * 根据菜单ID查询信息
      *
-     * @param menuId 菜单ID
+     * @param id 菜单ID
      * @return 菜单信息
      */
-    public SysMenu selectMenuById(Long menuId);
+    public SysMenu selectMenuById(Long id);
 
     /**
      * 是否存在菜单子节点

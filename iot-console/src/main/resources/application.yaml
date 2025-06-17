@@ -32,4 +32,4 @@ mybatis-plus:
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapper-locations: classpath*:/mapper/**/*.xml
   # 搜索指定包别名
-  type-aliases-package: io.github.nbb.iot.console.core.domain
+  type-aliases-package: io.github.nbb.iot.console.domain

@@ -36,7 +36,7 @@ public class LoginController {
         return AjaxResult.success(vo);
     }
 
-    @PostMapping("logout")
+    @PostMapping("/logout")
     public AjaxResult logout() {
         StpUtil.logout();
         return AjaxResult.success();
@@ -63,7 +63,7 @@ public class LoginController {
      *
      * @return 路由信息
      */
-    @GetMapping("getRouters")
+    @GetMapping("/getRouters")
     public AjaxResult getRouters() {
         Long userId = SecurityUtils.getUserId().get();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
