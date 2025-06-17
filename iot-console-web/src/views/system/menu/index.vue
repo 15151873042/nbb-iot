@@ -51,7 +51,7 @@
          v-if="refreshTable"
          v-loading="loading"
          :data="menuList"
-         row-key="menuId"
+         row-key="id"
          :default-expand-all="isExpandAll"
          :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
@@ -92,8 +92,8 @@
                      <el-tree-select
                         v-model="form.parentId"
                         :data="menuOptions"
-                        :props="{ value: 'menuId', label: 'menuName', children: 'children' }"
-                        value-key="menuId"
+                        :props="{ value: 'id', label: 'menuName', children: 'children' }"
+                        value-key="id"
                         placeholder="选择上级菜单"
                         check-strictly
                      />
@@ -325,7 +325,7 @@ const { queryParams, form, rules } = toRefs(data)
 function getList() {
   loading.value = true
   listMenu(queryParams.value).then(response => {
-    menuList.value = proxy.handleTree(response.data, "menuId")
+    menuList.value = proxy.handleTree(response.data, "id")
     loading.value = false
   })
 }
@@ -334,8 +334,8 @@ function getList() {
 function getTreeselect() {
   menuOptions.value = []
   listMenu().then(response => {
-    const menu = { menuId: 0, menuName: "主类目", children: [] }
-    menu.children = proxy.handleTree(response.data, "menuId")
+    const menu = { id: 0, menuName: "主类目", children: [] }
+    menu.children = proxy.handleTree(response.data, "id")
     menuOptions.value.push(menu)
   })
 }
@@ -349,7 +349,7 @@ function cancel() {
 /** 表单重置 */
 function reset() {
   form.value = {
-    menuId: undefined,
+    id: undefined,
     parentId: 0,
     menuName: undefined,
     icon: undefined,
@@ -388,8 +388,8 @@ function resetQuery() {
 function handleAdd(row) {
   reset()
   getTreeselect()
-  if (row != null && row.menuId) {
-    form.value.parentId = row.menuId
+  if (row != null && row.id) {
+    form.value.parentId = row.id
   } else {
     form.value.parentId = 0
   }
@@ -410,7 +410,7 @@ function toggleExpandAll() {
 async function handleUpdate(row) {
   reset()
   await getTreeselect()
-  getMenu(row.menuId).then(response => {
+  getMenu(row.id).then(response => {
     form.value = response.data
     open.value = true
     title.value = "修改菜单"
@@ -421,7 +421,7 @@ async function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["menuRef"].validate(valid => {
     if (valid) {
-      if (form.value.menuId != undefined) {
+      if (form.value.id != undefined) {
         updateMenu(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
@@ -441,7 +441,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal.confirm('是否确认删除名称为"' + row.menuName + '"的数据项?').then(function() {
-    return delMenu(row.menuId)
+    return delMenu(row.id)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("删除成功")
