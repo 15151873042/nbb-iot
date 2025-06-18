@@ -1,6 +1,7 @@
 package io.github.nbb.iot.console.util;
 
 
+import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -23,34 +24,28 @@ public class SecurityUtils {
     }
 
 
+    public static LoginUser getLoginUser() {
+        return tryGetLoginUser().orElseThrow(() -> NotLoginException.newInstance(StpUtil.TYPE, NotLoginException.DEFAULT_MESSAGE));
+
+    }
+
+
     /**
      * 获取用户ID
      */
-    public static Optional<Long> getUserId() {
-        return getLoginUser().map(loginUser -> loginUser.getSysUser().getId());
+    public static Long getUserId() {
+        return getLoginUser().getSysUser().getId();
     }
 
     /**
      * 获取用户名称
      */
-    public static Optional<String> getUsername() {
-        return getLoginUser().map(LoginUser::getUsername);
+    public static String getUsername() {
+        return getLoginUser().getSysUser().getUserName();
     }
 
 
-    /**
-     * 获取登录用户信息
-     */
-    public static Optional<LoginUser> getLoginUser() {
-        SaSession session = StpUtil.getSession(false);
-        if (ObjectUtil.isNull(session)) {
-            return Optional.empty();
-        }
 
-        LoginUser loginUser = (LoginUser)session.get(SaSession.USER);
-        return Optional.ofNullable(loginUser);
-
-    }
 
     /**
      * 获取请求token
@@ -91,5 +86,19 @@ public class SecurityUtils {
     public static boolean matchesPassword(String rawPassword, String encodedPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    /**
+     * 获取登录用户信息
+     */
+    public static Optional<LoginUser> tryGetLoginUser() {
+        SaSession session = StpUtil.getSession(false);
+        if (ObjectUtil.isNull(session)) {
+            return Optional.empty();
+        }
+
+        LoginUser loginUser = (LoginUser)session.get(SaSession.USER);
+        return Optional.ofNullable(loginUser);
+
     }
 }

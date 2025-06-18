@@ -32,7 +32,7 @@ public class SysMenuController extends BaseController {
     @SaCheckPermission("system:menu:list")
     @GetMapping("/list")
     public AjaxResult list(SysMenu menu) {
-        List<SysMenu> menus = menuService.selectMenuList(menu, SecurityUtils.getUserId().get());
+        List<SysMenu> menus = menuService.selectMenuList(menu, SecurityUtils.getUserId());
         return AjaxResult.success(menus);
     }
 
@@ -52,7 +52,7 @@ public class SysMenuController extends BaseController {
      */
     @GetMapping("/treeselect")
     public AjaxResult treeselect(SysMenu menu) {
-        List<SysMenu> menus = menuService.selectMenuList(menu, SecurityUtils.getUserId().get());
+        List<SysMenu> menus = menuService.selectMenuList(menu, SecurityUtils.getUserId());
         return AjaxResult.success(menuService.buildMenuTreeSelect(menus));
     }
 
@@ -61,7 +61,7 @@ public class SysMenuController extends BaseController {
      */
     @GetMapping(value = "/roleMenuTreeselect/{roleId}")
     public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId) {
-        List<SysMenu> menus = menuService.selectMenuList(SecurityUtils.getUserId().get());
+        List<SysMenu> menus = menuService.selectMenuList(SecurityUtils.getUserId());
         AjaxResult ajax = AjaxResult.success();
         ajax.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
         ajax.put("menus", menuService.buildMenuTreeSelect(menus));

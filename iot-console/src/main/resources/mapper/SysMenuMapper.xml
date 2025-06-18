@@ -179,7 +179,7 @@
 		<if test="createBy != null and createBy != ''">create_by,</if>
 		create_time
 		)values(
-		<if test="menuId != null and menuId != 0">#{menuId},</if>
+		<if test="id != null and id != 0">#{id},</if>
 		<if test="parentId != null and parentId != 0">#{parentId},</if>
 		<if test="menuName != null and menuName != ''">#{menuName},</if>
 		<if test="orderNum != null">#{orderNum},</if>

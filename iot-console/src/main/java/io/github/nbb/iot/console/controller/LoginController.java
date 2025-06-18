@@ -49,7 +49,7 @@ public class LoginController {
      */
     @GetMapping("/getInfo")
     public AjaxResult getInfo() {
-        LoginUser loginUser = SecurityUtils.getLoginUser().get();
+        LoginUser loginUser = SecurityUtils.getLoginUser();
         AjaxResult ajax = AjaxResult.success();
         ajax.put("user", loginUser.getSysUser());
         ajax.put("roles", loginUser.getRoles());
@@ -65,7 +65,7 @@ public class LoginController {
      */
     @GetMapping("/getRouters")
     public AjaxResult getRouters() {
-        Long userId = SecurityUtils.getUserId().get();
+        Long userId = SecurityUtils.getUserId();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
         return AjaxResult.success(menuService.buildMenus(menus));
     }

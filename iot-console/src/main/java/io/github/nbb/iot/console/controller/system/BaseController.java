@@ -50,7 +50,7 @@ public class BaseController {
      * 获取登录用户名
      */
     public String getUsername() {
-        return SecurityUtils.getUsername().get();
+        return SecurityUtils.getUsername();
     }
 
 
