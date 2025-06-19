@@ -104,15 +104,15 @@ public class SysMenuController extends BaseController {
      * 删除菜单
      */
     @SaCheckPermission("system:menu:remove")
-    @DeleteMapping("/{menuId}")
-    public AjaxResult remove(@PathVariable("menuId") Long menuId) {
-        if (menuService.hasChildByMenuId(menuId)) {
+    @DeleteMapping("/{id}")
+    public AjaxResult remove(@PathVariable("id") Long id) {
+        if (menuService.hasChildByMenuId(id)) {
             return warn("存在子菜单,不允许删除");
         }
-        if (menuService.checkMenuExistRole(menuId)) {
+        if (menuService.checkMenuExistRole(id)) {
             return warn("菜单已分配,不允许删除");
         }
-        return toAjax(menuService.deleteMenuById(menuId));
+        return toAjax(menuService.deleteMenuById(id));
     }
 
 }

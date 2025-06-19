@@ -190,8 +190,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public int deleteMenuById(Long menuId) {
-        return getBaseMapper().deleteMenuById(menuId);
+    public int deleteMenuById(Long id) {
+        return getBaseMapper().deleteMenuById(id);
     }
 
 

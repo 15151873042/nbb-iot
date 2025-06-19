@@ -111,10 +111,10 @@ public interface SysMenuMapper extends BaseMapper<SysMenu>
     /**
      * 删除菜单管理信息
      *
-     * @param menuId 菜单ID
+     * @param id 菜单ID
      * @return 结果
      */
-    public int deleteMenuById(Long menuId);
+    public int deleteMenuById(Long id);
 
     /**
      * 校验菜单名称是否唯一
