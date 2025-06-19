@@ -25,9 +25,9 @@ public class DefaultDBFieldHandler implements MetaObjectHandler {
         if (Objects.nonNull(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity) {
             BaseEntity baseEntity = (BaseEntity) metaObject.getOriginalObject();
 
-            if (Objects.isNull(baseEntity.getId())) {
-                baseEntity.setId(IdUtil.getSnowflakeNextId());
-            }
+//            if (Objects.isNull(baseEntity.getId())) {
+//                baseEntity.setId(IdUtil.getSnowflakeNextId());
+//            }
 
             LocalDateTime current = LocalDateTime.now();
             // 创建时间为空，则以当前时间为插入时间
