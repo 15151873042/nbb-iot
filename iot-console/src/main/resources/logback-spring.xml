@@ -57,6 +57,8 @@
         </encoder>
     </appender>
 
+    <logger name="io.github.nbb.iot.console.mapper" level="debug">
+    </logger>
 
     <root>
         <!-- 定义通用包（根）的日志输出级别 -->

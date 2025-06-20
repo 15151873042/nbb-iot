@@ -1,6 +1,5 @@
 package io.github.nbb.iot.console.framework.mybatisplus;
 
-import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import io.github.nbb.iot.console.domain.BaseEntity;
 import io.github.nbb.iot.console.util.SecurityUtils;
@@ -24,10 +23,6 @@ public class DefaultDBFieldHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         if (Objects.nonNull(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity) {
             BaseEntity baseEntity = (BaseEntity) metaObject.getOriginalObject();
-
-//            if (Objects.isNull(baseEntity.getId())) {
-//                baseEntity.setId(IdUtil.getSnowflakeNextId());
-//            }
 
             LocalDateTime current = LocalDateTime.now();
             // 创建时间为空，则以当前时间为插入时间

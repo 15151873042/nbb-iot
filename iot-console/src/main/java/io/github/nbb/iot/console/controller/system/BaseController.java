@@ -35,6 +35,30 @@ public class BaseController {
         return AjaxResult.warn(message);
     }
 
+    /**
+     * 返回成功
+     */
+    public AjaxResult success()
+    {
+        return AjaxResult.success();
+    }
+    /**
+     * 返回成功消息
+     */
+    public AjaxResult success(Object data)
+    {
+        return AjaxResult.success(data);
+    }
+
+
+    /**
+     * 返回成功消息
+     */
+    public AjaxResult success(String message)
+    {
+        return AjaxResult.success(message);
+    }
+
 
     /**
      * 响应返回结果
