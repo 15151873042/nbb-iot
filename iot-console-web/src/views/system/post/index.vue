@@ -79,7 +79,7 @@
 
       <el-table v-loading="loading" :data="postList" @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="岗位编号" align="center" prop="postId" />
+         <el-table-column label="岗位编号" align="center" prop="id" />
          <el-table-column label="岗位编码" align="center" prop="postCode" />
          <el-table-column label="岗位名称" align="center" prop="postName" />
          <el-table-column label="岗位排序" align="center" prop="postSort" />
@@ -182,7 +182,8 @@ const { queryParams, form, rules } = toRefs(data)
 function getList() {
   loading.value = true
   listPost(queryParams.value).then(response => {
-    postList.value = response.rows
+    const {data}  = response
+    postList.value = data.list
     total.value = response.total
     loading.value = false
   })
@@ -197,7 +198,7 @@ function cancel() {
 /** 表单重置 */
 function reset() {
   form.value = {
-    postId: undefined,
+    id: undefined,
     postCode: undefined,
     postName: undefined,
     postSort: 0,
@@ -221,7 +222,7 @@ function resetQuery() {
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.postId)
+  ids.value = selection.map(item => item.id)
   single.value = selection.length != 1
   multiple.value = !selection.length
 }
@@ -236,8 +237,8 @@ function handleAdd() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset()
-  const postId = row.postId || ids.value
-  getPost(postId).then(response => {
+  const id = row.id || ids.value
+  getPost(id).then(response => {
     form.value = response.data
     open.value = true
     title.value = "修改岗位"
@@ -248,7 +249,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["postRef"].validate(valid => {
     if (valid) {
-      if (form.value.postId != undefined) {
+      if (form.value.id != undefined) {
         updatePost(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
@@ -267,9 +268,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const postIds = row.postId || ids.value
-  proxy.$modal.confirm('是否确认删除岗位编号为"' + postIds + '"的数据项？').then(function() {
-    return delPost(postIds)
+  const ids = row.id || ids.value
+  proxy.$modal.confirm('是否确认删除岗位编号为"' + ids + '"的数据项？').then(function() {
+    return delPost(ids)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("删除成功")

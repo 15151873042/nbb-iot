@@ -1,5 +1,6 @@
 package io.github.nbb.iot.console.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.github.nbb.iot.console.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -42,6 +43,7 @@ public class SysPost extends BaseEntity {
     /**
      * 用户是否存在此岗位标识 默认不存在
      */
+    @TableField(select = false)
     private boolean flag = false;
 
 

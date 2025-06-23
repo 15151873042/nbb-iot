@@ -38,10 +38,10 @@ public interface SysPostService extends IService<SysPost> {
     /**
      * 通过岗位ID查询岗位信息
      *
-     * @param postId 岗位ID
+     * @param id 岗位ID
      * @return 角色对象信息
      */
-    public SysPost selectPostById(Long postId);
+    public SysPost selectPostById(Long id);
 
     /**
      * 根据用户ID获取岗位选择框列表

@@ -66,12 +66,12 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
     /**
      * 通过岗位ID查询岗位信息
      *
-     * @param postId 岗位ID
+     * @param id 岗位ID
      * @return 角色对象信息
      */
     @Override
-    public SysPost selectPostById(Long postId) {
-        return postMapper.selectPostById(postId);
+    public SysPost selectPostById(Long id) {
+        return postMapper.selectPostById(id);
     }
 
     /**

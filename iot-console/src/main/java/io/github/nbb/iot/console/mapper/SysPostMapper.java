@@ -32,10 +32,10 @@ public interface SysPostMapper extends BaseMapperX<SysPost> {
     /**
      * 通过岗位ID查询岗位信息
      *
-     * @param postId 岗位ID
+     * @param id 岗位ID
      * @return 角色对象信息
      */
-    public SysPost selectPostById(Long postId);
+    public SysPost selectPostById(Long id);
 
     /**
      * 根据用户ID获取岗位选择框列表
@@ -56,10 +56,10 @@ public interface SysPostMapper extends BaseMapperX<SysPost> {
     /**
      * 删除岗位信息
      *
-     * @param postId 岗位ID
+     * @param id 岗位ID
      * @return 结果
      */
-    public int deletePostById(Long postId);
+    public int deletePostById(Long id);
 
     /**
      * 批量删除岗位信息
@@ -67,7 +67,7 @@ public interface SysPostMapper extends BaseMapperX<SysPost> {
      * @param postIds 需要删除的岗位ID
      * @return 结果
      */
-    public int deletePostByIds(Long[] postIds);
+    public int deletePostByIds(Long[] ids);
 
     /**
      * 修改岗位信息

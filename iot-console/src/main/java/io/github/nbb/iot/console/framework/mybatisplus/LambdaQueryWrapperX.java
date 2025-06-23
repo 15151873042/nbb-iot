@@ -24,4 +24,20 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
         return this;
     }
 
+    public LambdaQueryWrapperX<T> gtIfPresent(SFunction<T, ?> column, Object val) {
+        return val != null ? (LambdaQueryWrapperX)super.gt(column, val) : this;
+    }
+
+    public LambdaQueryWrapperX<T> geIfPresent(SFunction<T, ?> column, Object val) {
+        return val != null ? (LambdaQueryWrapperX)super.ge(column, val) : this;
+    }
+
+    public LambdaQueryWrapperX<T> ltIfPresent(SFunction<T, ?> column, Object val) {
+        return val != null ? (LambdaQueryWrapperX)super.lt(column, val) : this;
+    }
+
+    public LambdaQueryWrapperX<T> leIfPresent(SFunction<T, ?> column, Object val) {
+        return val != null ? (LambdaQueryWrapperX)super.le(column, val) : this;
+    }
+
 }

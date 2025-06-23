@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -46,9 +47,9 @@ public class SysPostController extends BaseController {
      * 根据岗位编号获取详细信息
      */
     @SaCheckPermission("system:post:query")
-    @GetMapping(value = "/{postId}")
-    public AjaxResult getInfo(@PathVariable Long postId) {
-        return success(postService.selectPostById(postId));
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable Long id) {
+        return success(postService.selectPostById(id));
     }
 
     /**

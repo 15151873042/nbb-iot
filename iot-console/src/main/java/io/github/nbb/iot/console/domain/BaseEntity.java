@@ -56,6 +56,7 @@ public class BaseEntity implements Serializable {
     /**
      * 请求参数
      */
+    @TableField(select = false)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> params;
 
