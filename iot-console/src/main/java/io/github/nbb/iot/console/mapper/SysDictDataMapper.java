@@ -40,10 +40,10 @@ public interface SysDictDataMapper extends BaseMapperX<SysDictData> {
     /**
      * 根据字典数据ID查询信息
      *
-     * @param dictCode 字典数据ID
+     * @param id 字典数据ID
      * @return 字典数据
      */
-    public SysDictData selectDictDataById(Long dictCode);
+    public SysDictData selectDictDataById(Long id);
 
     /**
      * 查询字典数据
@@ -56,18 +56,18 @@ public interface SysDictDataMapper extends BaseMapperX<SysDictData> {
     /**
      * 通过字典ID删除字典数据信息
      *
-     * @param dictCode 字典数据ID
+     * @param id 字典数据ID
      * @return 结果
      */
-    public int deleteDictDataById(Long dictCode);
+    public int deleteDictDataById(Long id);
 
     /**
      * 批量删除字典数据信息
      *
-     * @param dictCodes 需要删除的字典数据ID
+     * @param ids 需要删除的字典数据ID
      * @return 结果
      */
-    public int deleteDictDataByIds(Long[] dictCodes);
+    public int deleteDictDataByIds(Long[] ids);
 
     /**
      * 新增字典数据信息

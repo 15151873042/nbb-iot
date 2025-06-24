@@ -1,6 +1,10 @@
 package io.github.nbb.iot.console.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import io.github.nbb.iot.console.domain.PageResult;
+import io.github.nbb.iot.console.domain.dto.DictDataPageDTO;
 import io.github.nbb.iot.console.domain.entity.SysDictData;
+import io.github.nbb.iot.console.framework.mybatisplus.LambdaQueryWrapperX;
 import io.github.nbb.iot.console.mapper.SysDictDataMapper;
 import io.github.nbb.iot.console.service.SysDictDataService;
 import io.github.nbb.iot.console.util.DictUtils;
@@ -18,6 +22,17 @@ import java.util.List;
 public class SysDictDataServiceImpl implements SysDictDataService {
     @Autowired
     private SysDictDataMapper dictDataMapper;
+
+    @Override
+    public PageResult<SysDictData> listPage(DictDataPageDTO dto) {
+        LambdaQueryWrapper<SysDictData> queryWrapper = new LambdaQueryWrapperX<SysDictData>()
+                .eqIfPresent(SysDictData::getDictType, dto.getDictType())
+                .eqIfPresent(SysDictData::getStatus, dto.getStatus())
+                .likeIfPresent(SysDictData::getDictLabel, dto.getDictLabel())
+                .orderByAsc(SysDictData::getDictSort);
+        PageResult<SysDictData> pageResult = dictDataMapper.selectPage(dto, queryWrapper);
+        return pageResult;
+    }
 
     /**
      * 根据条件分页查询字典数据
@@ -45,12 +60,12 @@ public class SysDictDataServiceImpl implements SysDictDataService {
     /**
      * 根据字典数据ID查询信息
      *
-     * @param dictCode 字典数据ID
+     * @param id 字典数据ID
      * @return 字典数据
      */
     @Override
-    public SysDictData selectDictDataById(Long dictCode) {
-        return dictDataMapper.selectDictDataById(dictCode);
+    public SysDictData selectDictDataById(Long id) {
+        return dictDataMapper.selectDictDataById(id);
     }
 
     /**

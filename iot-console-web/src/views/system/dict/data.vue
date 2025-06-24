@@ -86,9 +86,9 @@
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
 
-      <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
+      <el-table v-loading="loading" :data="dataList" show-overflow-tooltip @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="字典编码" align="center" prop="dictCode" />
+         <el-table-column label="字典编码" align="center" prop="id" />
          <el-table-column label="字典标签" align="center" prop="dictLabel">
             <template #default="scope">
                <span v-if="(scope.row.listClass == '' || scope.row.listClass == 'default') && (scope.row.cssClass == '' || scope.row.cssClass == null)">{{ scope.row.dictLabel }}</span>
@@ -197,8 +197,8 @@ const typeOptions = ref([])
 const route = useRoute()
 // 数据标签回显样式
 const listClassOptions = ref([
-  { value: "default", label: "默认" }, 
-  { value: "primary", label: "主要" }, 
+  { value: "default", label: "默认" },
+  { value: "primary", label: "主要" },
   { value: "success", label: "成功" },
   { value: "info", label: "信息" },
   { value: "warning", label: "警告" },
@@ -243,8 +243,9 @@ function getTypeList() {
 function getList() {
   loading.value = true
   listData(queryParams.value).then(response => {
-    dataList.value = response.rows
-    total.value = response.total
+    const {data} = response
+    dataList.value = data.list
+    total.value = data.total
     loading.value = false
   })
 }
@@ -258,7 +259,7 @@ function cancel() {
 /** 表单重置 */
 function reset() {
   form.value = {
-    dictCode: undefined,
+    id: undefined,
     dictLabel: undefined,
     dictValue: undefined,
     cssClass: undefined,
@@ -299,7 +300,7 @@ function handleAdd() {
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.dictCode)
+  ids.value = selection.map(item => item.id)
   single.value = selection.length != 1
   multiple.value = !selection.length
 }
@@ -307,8 +308,8 @@ function handleSelectionChange(selection) {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset()
-  const dictCode = row.dictCode || ids.value
-  getData(dictCode).then(response => {
+  const id = row.id || ids.value
+  getData(id).then(response => {
     form.value = response.data
     open.value = true
     title.value = "修改字典数据"
@@ -319,7 +320,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["dataRef"].validate(valid => {
     if (valid) {
-      if (form.value.dictCode != undefined) {
+      if (form.value.id != undefined) {
         updateData(form.value).then(response => {
           useDictStore().removeDict(queryParams.value.dictType)
           proxy.$modal.msgSuccess("修改成功")
@@ -340,9 +341,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const dictCodes = row.dictCode || ids.value
-  proxy.$modal.confirm('是否确认删除字典编码为"' + dictCodes + '"的数据项？').then(function() {
-    return delData(dictCodes)
+  const dictIds = row.id || ids.value
+  proxy.$modal.confirm('是否确认删除字典编码为"' + dictIds + '"的数据项？').then(function() {
+    return delData(dictIds)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("删除成功")

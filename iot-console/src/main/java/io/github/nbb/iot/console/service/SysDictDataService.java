@@ -1,6 +1,8 @@
 package io.github.nbb.iot.console.service;
 
 
+import io.github.nbb.iot.console.domain.PageResult;
+import io.github.nbb.iot.console.domain.dto.DictDataPageDTO;
 import io.github.nbb.iot.console.domain.entity.SysDictData;
 
 import java.util.List;
@@ -11,6 +13,15 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysDictDataService {
+
+    /**
+     * 根据条件分页查询字典数据
+     *
+     * @param dto 查询参数对象
+     * @return 字典数据集合信息
+     */
+    PageResult<SysDictData> listPage(DictDataPageDTO dto);
+
     /**
      * 根据条件分页查询字典数据
      *
@@ -31,10 +42,10 @@ public interface SysDictDataService {
     /**
      * 根据字典数据ID查询信息
      *
-     * @param dictCode 字典数据ID
+     * @param id 字典数据ID
      * @return 字典数据
      */
-    public SysDictData selectDictDataById(Long dictCode);
+    public SysDictData selectDictDataById(Long id);
 
     /**
      * 批量删除字典数据信息
@@ -58,4 +69,6 @@ public interface SysDictDataService {
      * @return 结果
      */
     public int updateDictData(SysDictData dictData);
+
+
 }

@@ -3,6 +3,8 @@ package io.github.nbb.iot.console.controller.system;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.ObjectUtil;
 import io.github.nbb.iot.console.domain.AjaxResult;
+import io.github.nbb.iot.console.domain.PageResult;
+import io.github.nbb.iot.console.domain.dto.DictDataPageDTO;
 import io.github.nbb.iot.console.domain.entity.SysDictData;
 import io.github.nbb.iot.console.service.SysDictDataService;
 import io.github.nbb.iot.console.service.SysDictTypeService;
@@ -27,14 +29,12 @@ public class SysDictDataController extends BaseController {
     @Autowired
     private SysDictTypeService dictTypeService;
 
-//    @SaCheckPermission("system:dict:list")
-//    @GetMapping("/list")
-//    public TableDataInfo list(SysDictData dictData)
-//    {
-//        startPage();
-//        List<SysDictData> list = dictDataService.selectDictDataList(dictData);
-//        return getDataTable(list);
-//    }
+    @SaCheckPermission("system:dict:list")
+    @GetMapping("/list")
+    public AjaxResult list(DictDataPageDTO dto) {
+        PageResult<SysDictData> result = dictDataService.listPage(dto);
+        return AjaxResult.success(result);
+    }
 
     /// 展示注释导出
 //    @SaCheckPermission("system:dict:export")
@@ -50,9 +50,9 @@ public class SysDictDataController extends BaseController {
      * 查询字典数据详细
      */
     @SaCheckPermission("system:dict:query")
-    @GetMapping(value = "/{dictCode}")
-    public AjaxResult getInfo(@PathVariable Long dictCode) {
-        return success(dictDataService.selectDictDataById(dictCode));
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable Long id) {
+        return success(dictDataService.selectDictDataById(id));
     }
 
     /**
@@ -62,7 +62,7 @@ public class SysDictDataController extends BaseController {
     public AjaxResult dictType(@PathVariable String dictType) {
         List<SysDictData> data = dictTypeService.selectDictDataByType(dictType);
         if (ObjectUtil.isNull(data)) {
-            data = new ArrayList<SysDictData>();
+            data = new ArrayList<>();
         }
         return success(data);
     }

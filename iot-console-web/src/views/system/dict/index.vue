@@ -212,11 +212,7 @@ function getList() {
   loading.value = true
   // 如果日期选择器被清空，其对应值会被置为null
   const [beginTime, endTime] = Array.isArray(dateRange.value) ? dateRange.value : []
-  const params = {
-    ...queryParams.value,
-    beginTime,
-    endTime
-  };
+  const params = {...queryParams.value, beginTime, endTime};
 
   listType(params).then(response => {
     const {data} = response
@@ -305,9 +301,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const ids = row.id || ids.value
-  proxy.$modal.confirm('是否确认删除字典编号为"' + ids + '"的数据项？').then(function() {
-    return delType(ids)
+  const dictIds = row.id || ids.value
+  proxy.$modal.confirm('是否确认删除字典编号为"' + dictIds + '"的数据项？').then(function() {
+    return delType(dictIds)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("删除成功")

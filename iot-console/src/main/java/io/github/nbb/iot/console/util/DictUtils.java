@@ -2,7 +2,6 @@ package io.github.nbb.iot.console.util;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import com.alibaba.fastjson2.JSONArray;
 import io.github.nbb.iot.console.constant.CacheConstants;
 import io.github.nbb.iot.console.domain.entity.SysDictData;
 import io.github.nbb.iot.console.framework.redis.RedisCache;
@@ -38,11 +37,8 @@ public class DictUtils {
      * @return dictDatas 字典数据列表
      */
     public static List<SysDictData> getDictCache(String key) {
-        JSONArray arrayCache = SpringUtil.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
-        if (ObjectUtil.isNotNull(arrayCache)) {
-            return arrayCache.toList(SysDictData.class);
-        }
-        return null;
+        List<SysDictData> dictDataList = SpringUtil.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
+        return dictDataList;
     }
 
     /**
