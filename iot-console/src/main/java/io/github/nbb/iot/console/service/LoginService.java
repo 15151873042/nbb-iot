@@ -38,6 +38,9 @@ public class LoginService {
     @Autowired
     private SysPermissionService permissionService;
 
+    @Autowired
+    private SysConfigService configService;
+
     /**
      * 登录验证
      * @return 结果
@@ -84,7 +87,7 @@ public class LoginService {
      * @return 结果
      */
     public void validateCaptcha(String username, String code, String uuid) {
-        boolean captchaEnabled = true; // TODO 从数据库获取
+        boolean captchaEnabled = configService.selectCaptchaEnabled();
         if (captchaEnabled) {
             String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
             String captcha = redisCache.getCacheObject(verifyKey);

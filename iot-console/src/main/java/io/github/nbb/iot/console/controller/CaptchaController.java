@@ -7,6 +7,7 @@ import io.github.nbb.iot.console.constant.CacheConstants;
 import io.github.nbb.iot.console.domain.AjaxResult;
 import io.github.nbb.iot.console.framework.redis.RedisCache;
 import io.github.nbb.iot.console.properties.NbbConfig;
+import io.github.nbb.iot.console.service.SysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,9 @@ public class CaptchaController {
     private Producer captchaProducerMath;
 
     @Autowired
+    private SysConfigService configService;
+
+    @Autowired
     private RedisCache redisCache;
 
 
@@ -41,7 +45,7 @@ public class CaptchaController {
     @GetMapping("/captchaImage")
     public AjaxResult getCode() {
         AjaxResult ajax = AjaxResult.success();
-        boolean captchaEnabled = true;
+        boolean captchaEnabled = configService.selectCaptchaEnabled();
         ajax.put("captchaEnabled", captchaEnabled);
         if (!captchaEnabled) {
             return ajax;
