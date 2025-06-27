@@ -1,6 +1,8 @@
 package io.github.nbb.iot.console.domain.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.github.nbb.iot.console.domain.BaseEntity;
 
 import java.util.Set;
@@ -10,6 +12,7 @@ import java.util.Set;
  *
  * @author ruoyi
  */
+@TableName(value = "sys_role")
 public class SysRole extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -57,21 +60,25 @@ public class SysRole extends BaseEntity {
     /**
      * 用户是否存在此角色标识 默认不存在
      */
+    @TableField(select = false)
     private boolean flag = false;
 
     /**
      * 菜单组
      */
+    @TableField(select = false)
     private Long[] menuIds;
 
     /**
      * 部门组（数据权限）
      */
+    @TableField(select = false)
     private Long[] deptIds;
 
     /**
      * 角色菜单权限
      */
+    @TableField(select = false)
     private Set<String> permissions;
 
     public SysRole() {

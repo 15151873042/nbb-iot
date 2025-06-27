@@ -23,9 +23,6 @@ spring:
 
 
 logging:
-  file:
-    name: ${spring.application.name}
-    path: d:\logs\
   level:
     io.github.nbb.iot.console.mapper: debug
 

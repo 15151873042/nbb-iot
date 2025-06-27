@@ -12,3 +12,9 @@ spring:
         enabled: true
         namespace: iot
         group: DEFAULT_GROUP
+
+# 这两个配置需要放在bootstrap.yaml，不然项目启动的时候，logback环境找不到对应配置会产生LOG_PATH_IS_UNDEFINED文件
+logging:
+  file:
+    name: iot-console
+    path: d:/logs/

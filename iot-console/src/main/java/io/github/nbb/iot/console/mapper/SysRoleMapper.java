@@ -3,6 +3,7 @@ package io.github.nbb.iot.console.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import io.github.nbb.iot.console.domain.entity.SysRole;
+import io.github.nbb.iot.console.framework.mybatisplus.BaseMapperX;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface SysRoleMapper extends BaseMapper<SysRole> {
+public interface SysRoleMapper extends BaseMapperX<SysRole> {
 
     /**
      * 根据用户ID查询角色
@@ -47,10 +48,10 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     /**
      * 通过角色ID查询角色
      *
-     * @param roleId 角色ID
+     * @param id 角色ID
      * @return 角色对象信息
      */
-    public SysRole selectRoleById(Long roleId);
+    public SysRole selectRoleById(Long id);
 
     /**
      * 根据用户ID查询角色
@@ -95,16 +96,16 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     /**
      * 通过角色ID删除角色
      *
-     * @param roleId 角色ID
+     * @param id 角色ID
      * @return 结果
      */
-    public int deleteRoleById(Long roleId);
+    public int deleteRoleById(Long id);
 
     /**
      * 批量删除角色信息
      *
-     * @param roleIds 需要删除的角色ID
+     * @param ids 需要删除的角色ID
      * @return 结果
      */
-    public int deleteRoleByIds(Long[] roleIds);
+    public int deleteRoleByIds(Long[] ids);
 }

@@ -9,6 +9,7 @@ import io.github.nbb.iot.console.framework.redis.RedisCache;
 import io.github.nbb.iot.console.properties.NbbConfig;
 import io.github.nbb.iot.console.service.SysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
