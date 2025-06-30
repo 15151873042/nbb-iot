@@ -30,12 +30,6 @@ public class SysRoleController extends BaseController {
     @Autowired
     private SysRoleService roleService;
 
-//    @Autowired
-//    private TokenService tokenService;
-
-    @Autowired
-    private SysPermissionService permissionService;
-
     @Autowired
     private SysUserService userService;
 

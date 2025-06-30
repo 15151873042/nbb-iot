@@ -282,7 +282,7 @@ const dataScopeOptions = ref([
 const data = reactive({
   form: {},
   queryParams: {
-    pageNum: 1,
+    pageNo: 1,
     pageSize: 10,
     roleName: undefined,
     roleKey: undefined,
