@@ -1,6 +1,7 @@
 package io.github.nbb.iot.console.mapper;
 
 import io.github.nbb.iot.console.domain.entity.SysUserRole;
+import io.github.nbb.iot.console.framework.mybatisplus.BaseMapperX;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface SysUserRoleMapper {
+public interface SysUserRoleMapper extends BaseMapperX<SysUserRole> {
     /**
      * 通过用户ID删除用户和角色关联
      *

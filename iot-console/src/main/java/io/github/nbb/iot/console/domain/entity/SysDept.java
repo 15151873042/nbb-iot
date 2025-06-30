@@ -1,6 +1,7 @@
 package io.github.nbb.iot.console.domain.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.github.nbb.iot.console.domain.BaseEntity;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
+@TableName(value = "sys_dept")
 public class SysDept extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

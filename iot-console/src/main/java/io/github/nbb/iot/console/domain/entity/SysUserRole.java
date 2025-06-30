@@ -1,5 +1,6 @@
 package io.github.nbb.iot.console.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -8,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author ruoyi
  */
+@TableName(value = "sys_user_role")
 public class SysUserRole {
     /**
      * 用户ID

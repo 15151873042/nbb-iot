@@ -4,8 +4,10 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import io.github.nbb.iot.console.domain.AjaxResult;
 import io.github.nbb.iot.console.domain.PageResult;
 import io.github.nbb.iot.console.domain.dto.RolePageDTO;
+import io.github.nbb.iot.console.domain.dto.UserAllocatedPageDTO;
 import io.github.nbb.iot.console.domain.entity.SysDept;
 import io.github.nbb.iot.console.domain.entity.SysRole;
+import io.github.nbb.iot.console.domain.entity.SysUser;
 import io.github.nbb.iot.console.domain.entity.SysUserRole;
 import io.github.nbb.iot.console.service.SysDeptService;
 import io.github.nbb.iot.console.service.SysPermissionService;
@@ -14,6 +16,8 @@ import io.github.nbb.iot.console.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 角色信息
@@ -142,30 +146,26 @@ public class SysRoleController extends BaseController {
         return success(roleService.selectRoleAll());
     }
 
-//    /**
-//     * 查询已分配用户角色列表
-//     */
-//    @SaCheckPermission("system:role:list")
-//    @GetMapping("/authUser/allocatedList")
-//    public TableDataInfo allocatedList(SysUser user)
-//    {
-//        startPage();
-//        List<SysUser> list = userService.selectAllocatedList(user);
-//        return getDataTable(list);
-//    }
-//
-//    /**
-//     * 查询未分配用户角色列表
-//     */
-//    @PreAuthorize("@ss.hasPermi('system:role:list')")
-//    @GetMapping("/authUser/unallocatedList")
-//    public TableDataInfo unallocatedList(SysUser user)
-//    {
-//        startPage();
-//        List<SysUser> list = userService.selectUnallocatedList(user);
-//        return getDataTable(list);
-//    }
-//
+    /**
+     * 查询已分配用户角色列表
+     */
+    @SaCheckPermission("system:role:list")
+    @GetMapping("/authUser/allocatedList")
+    public AjaxResult allocatedList(UserAllocatedPageDTO dto) {
+        PageResult<SysUser> result = userService.listAllocatedPage(dto);
+        return AjaxResult.success(result);
+    }
+
+    /**
+     * 查询未分配用户角色列表
+     */
+    @SaCheckPermission("system:role:list")
+    @GetMapping("/authUser/unallocatedList")
+    public AjaxResult unallocatedList(UserAllocatedPageDTO dto){
+        PageResult<SysUser> result = userService.listUnallocatedPage(dto);
+        return AjaxResult.success(result);
+    }
+
 
     /**
      * 取消授权用户

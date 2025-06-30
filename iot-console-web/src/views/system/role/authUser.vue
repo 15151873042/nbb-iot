@@ -47,9 +47,9 @@
             >批量取消授权</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button 
-               type="warning" 
-               plain 
+            <el-button
+               type="warning"
+               plain
                icon="Close"
                @click="handleClose"
             >关闭</el-button>
@@ -118,8 +118,9 @@ const queryParams = reactive({
 function getList() {
   loading.value = true
   allocatedUserList(queryParams).then(response => {
-    userList.value = response.rows
-    total.value = response.total
+    const {data} = response
+    userList.value = data.list
+    total.value = data.total
     loading.value = false
   })
 }
@@ -144,7 +145,7 @@ function resetQuery() {
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  userIds.value = selection.map(item => item.userId)
+  userIds.value = selection.map(item => item.id)
   multiple.value = !selection.length
 }
 
@@ -156,7 +157,7 @@ function openSelectUser() {
 /** 取消授权按钮操作 */
 function cancelAuthUser(row) {
   proxy.$modal.confirm('确认要取消该用户"' + row.userName + '"角色吗？').then(function () {
-    return authUserCancel({ userId: row.userId, roleId: queryParams.roleId })
+    return authUserCancel({ userId: row.id, roleId: queryParams.roleId })
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("取消授权成功")

@@ -1,6 +1,7 @@
 package io.github.nbb.iot.console.domain.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.github.nbb.iot.console.domain.BaseEntity;
 
@@ -80,26 +81,31 @@ public class SysUser extends BaseEntity {
     /**
      * 部门对象
      */
+    @TableField(select = false)
     private SysDept dept;
 
     /**
      * 角色对象
      */
+    @TableField(select = false)
     private List<SysRole> roles;
 
     /**
      * 角色组
      */
+    @TableField(select = false)
     private Long[] roleIds;
 
     /**
      * 岗位组
      */
+    @TableField(select = false)
     private Long[] postIds;
 
     /**
      * 角色ID
      */
+    @TableField(select = false)
     private Long roleId;
 
     public SysUser() {

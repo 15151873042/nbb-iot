@@ -1,6 +1,7 @@
 package io.github.nbb.iot.console.mapper;
 
 import io.github.nbb.iot.console.domain.entity.SysDept;
+import io.github.nbb.iot.console.framework.mybatisplus.BaseMapperX;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -10,8 +11,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface SysDeptMapper
-{
+public interface SysDeptMapper extends BaseMapperX<SysDept> {
     /**
      * 查询部门管理数据
      *
@@ -23,7 +23,7 @@ public interface SysDeptMapper
     /**
      * 根据角色ID查询部门树信息
      *
-     * @param roleId 角色ID
+     * @param roleId            角色ID
      * @param deptCheckStrictly 部门树选择项是否关联显示
      * @return 选中部门列表
      */
