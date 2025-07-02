@@ -78,6 +78,9 @@ public class SysUser extends BaseEntity {
      */
     private Date loginDate;
 
+    /** 密码最后更新时间 */
+    private Date pwdUpdateDate;
+
     /**
      * 部门对象
      */
@@ -215,6 +218,16 @@ public class SysUser extends BaseEntity {
 
     public void setLoginDate(Date loginDate) {
         this.loginDate = loginDate;
+    }
+
+    public Date getPwdUpdateDate()
+    {
+        return pwdUpdateDate;
+    }
+
+    public void setPwdUpdateDate(Date pwdUpdateDate)
+    {
+        this.pwdUpdateDate = pwdUpdateDate;
     }
 
     public SysDept getDept() {

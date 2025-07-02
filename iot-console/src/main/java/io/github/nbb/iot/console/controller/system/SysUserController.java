@@ -1,7 +1,10 @@
 package io.github.nbb.iot.console.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.core.util.ObjectUtil;
 import io.github.nbb.iot.console.domain.AjaxResult;
+import io.github.nbb.iot.console.domain.PageResult;
+import io.github.nbb.iot.console.domain.dto.UserPageDTO;
 import io.github.nbb.iot.console.domain.entity.SysDept;
 import io.github.nbb.iot.console.domain.entity.SysRole;
 import io.github.nbb.iot.console.domain.entity.SysUser;
@@ -10,14 +13,11 @@ import io.github.nbb.iot.console.service.SysPostService;
 import io.github.nbb.iot.console.service.SysRoleService;
 import io.github.nbb.iot.console.service.SysUserService;
 import io.github.nbb.iot.console.util.SecurityUtils;
-import lombok.extern.java.Log;
-import org.apache.commons.lang3.ArrayUtils;
+import io.github.nbb.iot.console.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,16 +41,15 @@ public class SysUserController extends BaseController {
     @Autowired
     private SysPostService postService;
 
-//    /**
-//     * 获取用户列表
-//     */
-//    @SaCheckPermission("system:user:list")
-//    @GetMapping("/list")
-//    public TableDataInfo list(SysUser user) {
-//        startPage();
-//        List<SysUser> list = userService.selectUserList(user);
-//        return getDataTable(list);
-//    }
+    /**
+     * 获取用户列表
+     */
+    @SaCheckPermission("system:user:list")
+    @GetMapping("/list")
+    public AjaxResult list(UserPageDTO dto) {
+        PageResult<SysUser> result = userService.listPage(dto);
+        return AjaxResult.success(result);
+    }
 
 //    @SaCheckPermission("system:user:export")
 //    @PostMapping("/export")
@@ -76,66 +75,68 @@ public class SysUserController extends BaseController {
 //        util.importTemplateExcel(response, "用户数据");
 //    }
 //
-//    /**
-//     * 根据用户编号获取详细信息
-//     */
-//    @SaCheckPermission("system:user:query")
-//    @GetMapping(value = {"/", "/{userId}"})
-//    public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId) {
-//        AjaxResult ajax = AjaxResult.success();
-//        if (StringUtils.isNotNull(userId)) {
+
+    /**
+     * 根据用户编号获取详细信息
+     */
+    @SaCheckPermission("system:user:query")
+    @GetMapping(value = {"/", "/{userId}"})
+    public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId) {
+        AjaxResult ajax = AjaxResult.success();
+        if (ObjectUtil.isNotNull(userId)) {
 //            userService.checkUserDataScope(userId);
-//            SysUser sysUser = userService.selectUserById(userId);
-//            ajax.put(AjaxResult.DATA_TAG, sysUser);
-//            ajax.put("postIds", postService.selectPostListByUserId(userId));
-//            ajax.put("roleIds", sysUser.getRoles().stream().map(SysRole::getRoleId).collect(Collectors.toList()));
-//        }
-//        List<SysRole> roles = roleService.selectRoleAll();
-//        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
-//        ajax.put("posts", postService.selectPostAll());
-//        return ajax;
-//    }
-//
-//    /**
-//     * 新增用户
-//     */
-//    @SaCheckPermission("system:user:add")
-//    @PostMapping
-//    public AjaxResult add(@Validated @RequestBody SysUser user) {
-//        deptService.checkDeptDataScope(user.getDeptId());
-//        roleService.checkRoleDataScope(user.getRoleIds());
-//        if (!userService.checkUserNameUnique(user)) {
-//            return error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
-//        } else if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
-//            return error("新增用户'" + user.getUserName() + "'失败，手机号码已存在");
-//        } else if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user)) {
-//            return error("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
-//        }
-//        user.setCreateBy(getUsername());
-//        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
-//        return toAjax(userService.insertUser(user));
-//    }
-//
-//    /**
-//     * 修改用户
-//     */
-//    @SaCheckPermission("system:user:edit")
-//    @PutMapping
-//    public AjaxResult edit(@Validated @RequestBody SysUser user) {
-//        userService.checkUserAllowed(user);
-//        userService.checkUserDataScope(user.getUserId());
-//        deptService.checkDeptDataScope(user.getDeptId());
-//        roleService.checkRoleDataScope(user.getRoleIds());
-//        if (!userService.checkUserNameUnique(user)) {
-//            return error("修改用户'" + user.getUserName() + "'失败，登录账号已存在");
-//        } else if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
-//            return error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
-//        } else if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user)) {
-//            return error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
-//        }
-//        user.setUpdateBy(getUsername());
-//        return toAjax(userService.updateUser(user));
-//    }
+            SysUser sysUser = userService.selectUserById(userId);
+            ajax.put(AjaxResult.DATA_TAG, sysUser);
+            ajax.put("postIds", postService.selectPostListByUserId(userId));
+            ajax.put("roleIds", sysUser.getRoles().stream().map(SysRole::getId).collect(Collectors.toList()));
+        }
+        List<SysRole> roles = roleService.selectRoleAll();
+        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
+        ajax.put("posts", postService.selectPostAll());
+        return ajax;
+    }
+
+    /**
+     * 新增用户
+     */
+    @SaCheckPermission("system:user:add")
+    @PostMapping
+    public AjaxResult add(@Validated @RequestBody SysUser user) {
+        deptService.checkDeptDataScope(user.getDeptId());
+        roleService.checkRoleDataScope(user.getRoleIds());
+        if (!userService.checkUserNameUnique(user)) {
+            return error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
+        } else if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
+            return error("新增用户'" + user.getUserName() + "'失败，手机号码已存在");
+        } else if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user)) {
+            return error("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+        }
+        user.setCreateBy(getUsername());
+        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+        return toAjax(userService.insertUser(user));
+    }
+
+
+    /**
+     * 修改用户
+     */
+    @SaCheckPermission("system:user:edit")
+    @PutMapping
+    public AjaxResult edit(@Validated @RequestBody SysUser user) {
+        userService.checkUserAllowed(user);
+//        userService.checkUserDataScope(user.getId());
+        deptService.checkDeptDataScope(user.getDeptId());
+        roleService.checkRoleDataScope(user.getRoleIds());
+        if (!userService.checkUserNameUnique(user)) {
+            return error("修改用户'" + user.getUserName() + "'失败，登录账号已存在");
+        } else if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
+            return error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
+        } else if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user)) {
+            return error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+        }
+        user.setUpdateBy(getUsername());
+        return toAjax(userService.updateUser(user));
+    }
 //
 //    /**
 //     * 删除用户

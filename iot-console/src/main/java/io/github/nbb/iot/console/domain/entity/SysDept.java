@@ -1,6 +1,7 @@
 package io.github.nbb.iot.console.domain.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.github.nbb.iot.console.domain.BaseEntity;
 
@@ -65,11 +66,13 @@ public class SysDept extends BaseEntity {
     /**
      * 父部门名称
      */
+    @TableField(select = false)
     private String parentName;
 
     /**
      * 子部门
      */
+    @TableField(select = false)
     private List<SysDept> children = new ArrayList<SysDept>();
 
     public Long getParentId() {
