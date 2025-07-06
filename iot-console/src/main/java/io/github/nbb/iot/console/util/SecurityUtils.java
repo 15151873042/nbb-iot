@@ -3,6 +3,7 @@ package io.github.nbb.iot.console.util;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.spring.SpringMVCUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import io.github.nbb.iot.console.domain.LoginUser;
@@ -20,7 +21,11 @@ public class SecurityUtils {
      * @return 是否已登录
      */
     public static boolean isLogin() {
-        return StpUtil.isLogin();
+        boolean isWebEnv = SpringMVCUtil.isWeb();
+        if (!isWebEnv) {
+            return false;
+        }
+        return  StpUtil.isLogin();
     }
 
 

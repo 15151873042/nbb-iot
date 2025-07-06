@@ -1,9 +1,6 @@
 package io.github.nbb.iot.console.domain;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
@@ -21,7 +18,6 @@ public class BaseEntity implements Serializable {
      * 主键ID
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    @TableField(value = "create_by", fill = FieldFill.INSERT)
     private Long id;
 
     /**
@@ -56,7 +52,7 @@ public class BaseEntity implements Serializable {
     /**
      * 请求参数
      */
-    @TableField(select = false)
+    @TableField(select = false, updateStrategy = FieldStrategy.NEVER)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> params;
 

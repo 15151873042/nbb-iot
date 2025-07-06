@@ -35,17 +35,17 @@ public class TestController implements SmartInitializingSingleton {
     @SneakyThrows
     @Override
     public void afterSingletonsInstantiated() {
-        NamingService namingService = nacosServiceManager.getNamingService();
-        namingService.subscribe("iot-gateway", "DEFAULT_GROUP", event -> {
-            if (event instanceof NamingEvent) {
-                NamingEvent namingEvent = (NamingEvent) event;
-
-                List<String> onLineClientIds = namingEvent.getInstances().stream()
-                        .map(instance -> instance.getMetadata().get("client-id")).collect(Collectors.toList());
-
-                this.onLineClientIds.clear();
-                this.onLineClientIds.addAll(onLineClientIds);
-            }
-        });
+//        NamingService namingService = nacosServiceManager.getNamingService();
+//        namingService.subscribe("iot-gateway", "DEFAULT_GROUP", event -> {
+//            if (event instanceof NamingEvent) {
+//                NamingEvent namingEvent = (NamingEvent) event;
+//
+//                List<String> onLineClientIds = namingEvent.getInstances().stream()
+//                        .map(instance -> instance.getMetadata().get("client-id")).collect(Collectors.toList());
+//
+//                this.onLineClientIds.clear();
+//                this.onLineClientIds.addAll(onLineClientIds);
+//            }
+//        });
     }
 }
