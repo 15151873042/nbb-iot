@@ -5,22 +5,26 @@ import io.github.nbb.iot.console.domain.BaseEntity;
 import lombok.*;
 
 /**
- * 网关 DO
+ * 串口 DO
  *
  * @author 胡鹏
  */
-@TableName("iot_gateway")
+@TableName("iot_serial")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IotGateway extends BaseEntity {
+public class IotSerial extends BaseEntity {
     /**
-     * 网关编号
+     * ip
      */
-    private String code;
+    private String ip;
+    /**
+     * ip
+     */
+    private Integer port;
     /**
      * 是否在线
      */

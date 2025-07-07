@@ -1,17 +1,26 @@
 <template>
    <div class="app-container">
       <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
-         <el-form-item label="网关编号" prop="postCode">
+         <el-form-item label="串口IP" prop="port">
             <el-input
-               v-model="queryParams.code"
-               placeholder="请输入网关编号"
+               v-model="queryParams.ip"
+               placeholder="请输入串口IP地址"
+               clearable
+               style="width: 200px"
+               @keyup.enter="handleQuery"
+            />
+         </el-form-item>
+         <el-form-item label="串口端口" prop="port">
+            <el-input
+               v-model="queryParams.port"
+               placeholder="请输入串口IP地址"
                clearable
                style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
          <el-form-item label="状态" prop="status">
-            <el-select v-model="queryParams.isOnline" placeholder="网关状态" clearable style="width: 200px">
+            <el-select v-model="queryParams.isOnline" placeholder="串口状态" clearable style="width: 200px">
                <el-option :label="'在线'" :value="true"/>
                <el-option :label="'离线'" :value="false"/>
             </el-select>
@@ -64,9 +73,10 @@
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
 
-      <el-table v-loading="loading" :data="gatewayList" @selection-change="handleSelectionChange">
+      <el-table v-loading="loading" :data="serialList" @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="网关编号" align="center" prop="code" />
+         <el-table-column label="IP" align="center" prop="ip" />
+         <el-table-column label="端口" align="center" prop="port" />
          <el-table-column label="是否在线" align="center" prop="isOnline"/>
          <el-table-column label="创建时间" align="center" prop="createTime" width="180">
             <template #default="scope">
@@ -92,23 +102,11 @@
       <!-- 添加或修改岗位对话框 -->
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
          <el-form ref="postRef" :model="form" :rules="rules" label-width="80px">
-            <el-form-item label="岗位名称" prop="postName">
-               <el-input v-model="form.postName" placeholder="请输入岗位名称" />
+            <el-form-item label="IP" prop="ip">
+               <el-input v-model="form.ip" placeholder="请输入串口服务器IP" />
             </el-form-item>
-            <el-form-item label="岗位编码" prop="postCode">
-               <el-input v-model="form.postCode" placeholder="请输入编码名称" />
-            </el-form-item>
-            <el-form-item label="岗位顺序" prop="postSort">
-               <el-input-number v-model="form.postSort" controls-position="right" :min="0" />
-            </el-form-item>
-            <el-form-item label="岗位状态" prop="status">
-               <el-radio-group v-model="form.status">
-                  <el-radio
-                     v-for="dict in sys_normal_disable"
-                     :key="dict.value"
-                     :value="dict.value"
-                  >{{ dict.label }}</el-radio>
-               </el-radio-group>
+            <el-form-item label="端口" prop="port">
+               <el-input v-model="form.port" placeholder="请输入串口服务器端口" />
             </el-form-item>
             <el-form-item label="备注" prop="remark">
                <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
@@ -126,12 +124,12 @@
 
 <script setup name="Post">
 import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/post"
-import {listPageGateway} from "@/api/iot/gateway.js";
+import {listPageSerial} from "@/api/iot/serial.js";
 
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
 
-const gatewayList = ref([])
+const serialList = ref([])
 const open = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
@@ -146,13 +144,13 @@ const data = reactive({
   queryParams: {
     pageNo: 1,
     pageSize: 10,
+    ip: undefined,
+    port: undefined,
     isOnline: undefined,
-    code: undefined,
   },
   rules: {
-    postName: [{ required: true, message: "岗位名称不能为空", trigger: "blur" }],
-    postCode: [{ required: true, message: "岗位编码不能为空", trigger: "blur" }],
-    postSort: [{ required: true, message: "岗位顺序不能为空", trigger: "blur" }],
+    ip: [{ required: true, message: "串口ip地址不能为空", trigger: "blur" }],
+    port: [{ required: true, message: "串口端口不能为空", trigger: "blur" }],
   }
 })
 
@@ -161,9 +159,9 @@ const { queryParams, form, rules } = toRefs(data)
 /** 查询岗位列表 */
 function getList() {
   loading.value = true
-  listPageGateway(queryParams.value).then(response => {
+  listPageSerial(queryParams.value).then(response => {
     const {data}  = response
-    gatewayList.value = data.list
+    serialList.value = data.list
     total.value = response.total
     loading.value = false
   })
@@ -179,10 +177,8 @@ function cancel() {
 function reset() {
   form.value = {
     id: undefined,
-    postCode: undefined,
-    postName: undefined,
-    postSort: 0,
-    status: "0",
+    ip: undefined,
+    port: undefined,
     remark: undefined
   }
   proxy.resetForm("postRef")
