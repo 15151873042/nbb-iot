@@ -11,7 +11,7 @@
  Target Server Version : 80300 (8.3.0)
  File Encoding         : 65001
 
- Date: 06/07/2025 21:45:17
+ Date: 10/07/2025 22:04:35
 */
 
 SET NAMES utf8mb4;
@@ -103,7 +103,29 @@ CREATE TABLE `iot_gateway`  (
 -- ----------------------------
 -- Records of iot_gateway
 -- ----------------------------
-INSERT INTO `iot_gateway` VALUES (1, 'iot-gateway-01', b'0', '', '2025-07-05 19:47:08', NULL, '2025-07-05 19:34:36', NULL);
+INSERT INTO `iot_gateway` VALUES (1, 'iot-gateway-01', b'0', '', '2025-07-05 19:47:08', NULL, '2025-07-10 21:17:49', NULL);
+
+-- ----------------------------
+-- Table structure for iot_serial
+-- ----------------------------
+DROP TABLE IF EXISTS `iot_serial`;
+CREATE TABLE `iot_serial`  (
+                               `id` bigint NOT NULL COMMENT 'id',
+                               `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ip',
+                               `port` int NULL DEFAULT NULL COMMENT '端口',
+                               `is_online` bit(1) NULL DEFAULT NULL COMMENT '是否在线',
+                               `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+                               `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                               `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+                               `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                               `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+                               PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '串口表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of iot_serial
+-- ----------------------------
+INSERT INTO `iot_serial` VALUES (1, '192.168.1.200', 4196, b'0', '', '2025-07-05 19:47:08', NULL, '2025-07-05 19:34:36', NULL);
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -435,7 +457,7 @@ INSERT INTO `sys_menu` VALUES (1052, '任务删除', 110, 4, '#', '', '', '', 1,
 INSERT INTO `sys_menu` VALUES (1053, '状态修改', 110, 5, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:changeStatus', '#', 'admin', '2025-06-16 08:44:19', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1054, '任务导出', 110, 6, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:export', '#', 'admin', '2025-06-16 08:44:19', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1941348198216204289, '网关管理', 0, 3, 'gateway', 'gateway/index', NULL, '', 1, 0, 'C', '0', '0', 'gateway:list', 'dashboard', 'admin', '2025-07-05 12:07:33', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1941349048779112449, '串口管理', 0, 4, 'serialPort', 'serialPort/index', NULL, '', 1, 0, 'C', '0', '0', 'serialPort:list', 'international', 'admin', '2025-07-05 12:10:56', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1941349048779112449, '串口管理', 0, 4, 'serial', 'serial/index', NULL, '', 1, 0, 'C', '0', '0', 'serial:list', 'international', 'admin', '2025-07-05 12:10:56', 'admin', '2025-07-07 21:09:30', '');
 
 -- ----------------------------
 -- Table structure for sys_notice

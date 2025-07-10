@@ -52,7 +52,7 @@ public class BaseEntity implements Serializable {
     /**
      * 请求参数
      */
-    @TableField(select = false, updateStrategy = FieldStrategy.NEVER)
+    @TableField(select = false, updateStrategy = FieldStrategy.NEVER, insertStrategy = FieldStrategy.NEVER)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> params;
 

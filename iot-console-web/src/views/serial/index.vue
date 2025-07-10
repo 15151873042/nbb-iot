@@ -101,7 +101,7 @@
 
       <!-- 添加或修改岗位对话框 -->
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-         <el-form ref="postRef" :model="form" :rules="rules" label-width="80px">
+         <el-form ref="saveRef" :model="form" :rules="rules" label-width="80px">
             <el-form-item label="IP" prop="ip">
                <el-input v-model="form.ip" placeholder="请输入串口服务器IP" />
             </el-form-item>
@@ -124,7 +124,7 @@
 
 <script setup name="Post">
 import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/post"
-import {listPageSerial} from "@/api/iot/serial.js";
+import {addSerial, delSerial, getSerial, listPageSerial, updateSerial} from "@/api/iot/serial.js";
 
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
@@ -181,7 +181,7 @@ function reset() {
     port: undefined,
     remark: undefined
   }
-  proxy.resetForm("postRef")
+  proxy.resetForm("saveRef")
 }
 
 /** 搜索按钮操作 */
@@ -207,14 +207,14 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset()
   open.value = true
-  title.value = "添加岗位"
+  title.value = "添加串口"
 }
 
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset()
   const id = row.id || ids.value
-  getPost(id).then(response => {
+  getSerial(id).then(response => {
     form.value = response.data
     open.value = true
     title.value = "修改岗位"
@@ -223,16 +223,16 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["postRef"].validate(valid => {
+  proxy.$refs["saveRef"].validate(valid => {
     if (valid) {
       if (form.value.id != undefined) {
-        updatePost(form.value).then(response => {
+        updateSerial(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
           getList()
         })
       } else {
-        addPost(form.value).then(response => {
+        addSerial(form.value).then(response => {
           proxy.$modal.msgSuccess("新增成功")
           open.value = false
           getList()
@@ -244,9 +244,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const ids = row.id || ids.value
-  proxy.$modal.confirm('是否确认删除岗位编号为"' + ids + '"的数据项？').then(function() {
-    return delPost(ids)
+  const idList = row.id || ids.value
+  proxy.$modal.confirm('是否确认删除岗位编号为"' + idList + '"的数据项？').then(function() {
+    return delSerial(idList)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("删除成功")
