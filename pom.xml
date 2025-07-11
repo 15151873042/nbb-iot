@@ -48,6 +48,7 @@
         <commons.io.version>2.19.0</commons.io.version>
         <fastjson.version>2.0.57</fastjson.version>
         <mysql.version>8.0.33</mysql.version>
+        <lock4j.version>2.2.3</lock4j.version>
     </properties>
 
     <dependencyManagement>
@@ -207,6 +208,13 @@
                 <groupId>pro.fessional</groupId>
                 <artifactId>kaptcha</artifactId>
                 <version>${kaptcha.version}</version>
+            </dependency>
+
+            <!-- 分布式锁 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>lock4j-redisson-spring-boot-starter</artifactId>
+                <version>${lock4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

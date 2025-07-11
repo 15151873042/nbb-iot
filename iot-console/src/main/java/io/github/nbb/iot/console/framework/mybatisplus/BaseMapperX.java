@@ -1,6 +1,7 @@
 package io.github.nbb.iot.console.framework.mybatisplus;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.base.MPJBaseMapper;
@@ -41,5 +42,9 @@ public interface BaseMapperX<T> extends MPJBaseMapper<T> {
         mpPage = selectJoinPage(mpPage, clazz, lambdaWrapper);
         // 转换返回
         return new PageResult<>(mpPage.getRecords(), mpPage.getTotal());
+    }
+
+    default List<T> listAll() {
+        return this.selectList(new QueryWrapper());
     }
 }

@@ -9,11 +9,11 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(of = {"host", "port"})
 @Data
-public class SerialServerDO {
+public class IotSerialDO {
 
     private String id;
 
-    private String host;
+    private String ip;
 
     private Integer port;
 }

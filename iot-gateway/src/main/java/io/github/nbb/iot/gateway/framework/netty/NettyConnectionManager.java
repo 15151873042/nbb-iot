@@ -1,6 +1,6 @@
 package io.github.nbb.iot.gateway.framework.netty;
 
-import io.github.nbb.iot.common.domain.SerialServerDO;
+import io.github.nbb.iot.common.domain.IotSerialDO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class NettyConnectionManager {
 
-    Map<SerialServerDO, ReconnectableNettyClient> connections = new ConcurrentHashMap<>();
+    Map<IotSerialDO, ReconnectableNettyClient> connections = new ConcurrentHashMap<>();
 
-    public synchronized void reload(List<SerialServerDO> serialServerList) {
+    public synchronized void reload(List<IotSerialDO> serialServerList) {
         // 需要关闭的Client
         this.connections.entrySet().stream()
                 .filter(item -> !serialServerList.contains(item.getKey()))
@@ -23,13 +23,13 @@ public class NettyConnectionManager {
                 .forEach(item -> item.shutdown());
 
         // 构建新的Connection
-        Map<SerialServerDO, ReconnectableNettyClient> newConnections = serialServerList.stream()
+        Map<IotSerialDO, ReconnectableNettyClient> newConnections = serialServerList.stream()
                 .collect(Collectors.toMap(item -> item, item -> this.connections.getOrDefault(item, new ReconnectableNettyClient(item))));
         this.connections = newConnections;
     }
 
 
-    public void sendMessage(SerialServerDO serialServerInfo, String message) {
+    public void sendMessage(IotSerialDO serialServerInfo, String message) {
         connections.get(serialServerInfo).sendMessage(message);
     }
 }

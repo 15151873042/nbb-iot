@@ -1,28 +1,18 @@
 package io.github.nbb.iot.console.service.iot;
 
-import cn.hutool.core.collection.CollUtil;
-import com.alibaba.cloud.nacos.NacosServiceManager;
-import com.alibaba.nacos.api.naming.NamingService;
-import com.alibaba.nacos.api.naming.listener.NamingEvent;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.github.nbb.iot.common.domain.IotSerialDO;
 import io.github.nbb.iot.console.domain.PageResult;
-import io.github.nbb.iot.console.domain.dto.iot.GatewayPageDTO;
 import io.github.nbb.iot.console.domain.dto.iot.SerialPageDTO;
-import io.github.nbb.iot.console.domain.entity.iot.IotGateway;
 import io.github.nbb.iot.console.domain.entity.iot.IotSerial;
 import io.github.nbb.iot.console.framework.mybatisplus.LambdaQueryWrapperX;
-import io.github.nbb.iot.console.mapper.iot.IotGatewayMapper;
 import io.github.nbb.iot.console.mapper.iot.IotSerialMapper;
-import io.github.nbb.iot.console.util.AopProxyUtils;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 网关 Service 实现类
@@ -30,7 +20,7 @@ import java.util.stream.Collectors;
  * @author 芋道源码
  */
 @Service
-public class SerialServiceImpl extends ServiceImpl<IotSerialMapper, IotSerial> implements SerialService {
+public class SerialServiceImpl extends BasePublishToNacosService<IotSerialMapper, IotSerial> implements SerialService {
 
     @Autowired
     private IotSerialMapper serialMapper;
@@ -44,5 +34,17 @@ public class SerialServiceImpl extends ServiceImpl<IotSerialMapper, IotSerial> i
                 .orderByDesc(IotSerial::getCreateTime);
         PageResult<IotSerial> pageResult = serialMapper.selectPage(dto, queryWrapper);
         return pageResult;
+    }
+
+    @Override
+    protected String getPublishDataText() {
+        List<IotSerial> serialList = serialMapper.listAll();
+        List<IotSerialDO> doList = BeanUtil.copyToList(serialList, IotSerialDO.class);
+        return JSONUtil.toJsonStr(doList);
+    }
+
+    @Override
+    protected String getPublishDataId() {
+        return "iot-serial.json";
     }
 }

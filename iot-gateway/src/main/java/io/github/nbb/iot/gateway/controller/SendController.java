@@ -1,7 +1,7 @@
 package io.github.nbb.iot.gateway.controller;
 
 
-import io.github.nbb.iot.common.domain.SerialServerDO;
+import io.github.nbb.iot.common.domain.IotSerialDO;
 import io.github.nbb.iot.gateway.framework.netty.NettyConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ public class SendController {
 
     @RequestMapping("/send")
     public String send(String message, String ip, int port) {
-        SerialServerDO serialServerDO = new SerialServerDO();
+        IotSerialDO serialServerDO = new IotSerialDO();
         serialServerDO.setId("1");
         serialServerDO.setHost(ip);
         serialServerDO.setPort(port);

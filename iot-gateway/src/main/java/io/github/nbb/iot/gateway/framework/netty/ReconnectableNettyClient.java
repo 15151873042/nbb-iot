@@ -1,7 +1,7 @@
 package io.github.nbb.iot.gateway.framework.netty;
 
 import cn.hutool.core.util.HexUtil;
-import io.github.nbb.iot.common.domain.SerialServerDO;
+import io.github.nbb.iot.common.domain.IotSerialDO;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -48,7 +48,7 @@ public class ReconnectableNettyClient {
     private ScheduledFuture<?> reconnectFuture; // 记录重连任务句柄
 
 
-    public ReconnectableNettyClient(SerialServerDO serialServerInfo) {
+    public ReconnectableNettyClient(IotSerialDO serialServerInfo) {
         this.host = serialServerInfo.getHost();
         this.port = serialServerInfo.getPort();
         this.heartbeatExecutor = Executors.newSingleThreadScheduledExecutor();
