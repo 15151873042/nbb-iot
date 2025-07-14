@@ -5,6 +5,8 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.github.nbb.iot.common.domain.IotSerialDO;
 import io.github.nbb.iot.console.domain.PageResult;
+import io.github.nbb.iot.console.domain.dto.iot.SerialAddSaveDTO;
+import io.github.nbb.iot.console.domain.dto.iot.SerialEditSaveDTO;
 import io.github.nbb.iot.console.domain.dto.iot.SerialPageDTO;
 import io.github.nbb.iot.console.domain.entity.iot.IotSerial;
 import io.github.nbb.iot.console.framework.mybatisplus.LambdaQueryWrapperX;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static io.github.nbb.iot.common.constants.NacosConfigConstants.IOT_SERIAL_DATA_ID;
 
 /**
  * 网关 Service 实现类
@@ -32,8 +36,30 @@ public class SerialServiceImpl extends BasePublishToNacosService<IotSerialMapper
                 .eqIfPresent(IotSerial::getPort, dto.getPort())
                 .eqIfPresent(IotSerial::getIsOnline, dto.getIsOnline())
                 .orderByDesc(IotSerial::getCreateTime);
-        PageResult<IotSerial> pageResult = serialMapper.selectPage(dto, queryWrapper);
-        return pageResult;
+        return serialMapper.selectPage(dto, queryWrapper);
+    }
+
+    @Override
+    public void addSave(SerialAddSaveDTO dto) {
+        IotSerial iotSerial = BeanUtil.copyProperties(dto, IotSerial.class);
+        serialMapper.insert(iotSerial);
+
+        this.publishToNaocs();
+    }
+
+    @Override
+    public void editSave(SerialEditSaveDTO dto) {
+        IotSerial iotSerial = BeanUtil.copyProperties(dto, IotSerial.class);
+        serialMapper.updateById(iotSerial);
+
+        this.publishToNaocs();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        serialMapper.deleteById(id);
+
+        this.publishToNaocs();
     }
 
     @Override
@@ -45,6 +71,6 @@ public class SerialServiceImpl extends BasePublishToNacosService<IotSerialMapper
 
     @Override
     protected String getPublishDataId() {
-        return "iot-serial.json";
+        return IOT_SERIAL_DATA_ID;
     }
 }

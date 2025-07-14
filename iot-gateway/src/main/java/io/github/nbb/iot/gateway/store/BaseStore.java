@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.*;
 
+import static io.github.nbb.iot.common.constants.NacosConfigConstants.GROUP_NAME;
 
 
 /**
@@ -21,8 +22,6 @@ import java.util.concurrent.*;
 public abstract class BaseStore<T> implements InitializingBean {
 
     private static final int DEFAULT_TIMEOUT = 3000;
-
-    public static final String DEFAULT_GROUP_NAME = "DEFAULT_GROUP";
 
     @Resource
     private NacosConfigManager nacosConfigManager;
@@ -51,7 +50,7 @@ public abstract class BaseStore<T> implements InitializingBean {
     }
 
     private void initNacosListener() throws NacosException {
-        nacosConfigManager.getConfigService().addListener(this.dataId, DEFAULT_GROUP_NAME, new Listener() {
+        nacosConfigManager.getConfigService().addListener(this.dataId, GROUP_NAME, new Listener() {
             @Override
             public Executor getExecutor() {
                 return pool;
@@ -66,7 +65,7 @@ public abstract class BaseStore<T> implements InitializingBean {
     }
 
     private void loadInitialConfig() throws NacosException {
-        String configData = nacosConfigManager.getConfigService().getConfig(this.dataId, DEFAULT_GROUP_NAME, DEFAULT_TIMEOUT);
+        String configData = nacosConfigManager.getConfigService().getConfig(this.dataId, GROUP_NAME, DEFAULT_TIMEOUT);
         if (null == configData) {
             log.warn("加载nacos配置{}的值为null，请检查配置内容", this.dataId);
         } else {

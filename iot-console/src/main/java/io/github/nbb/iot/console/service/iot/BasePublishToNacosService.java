@@ -11,12 +11,16 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.annotation.Resource;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import static io.github.nbb.iot.common.constants.NacosConfigConstants.GROUP_NAME;
 
 @Slf4j
 public abstract class BasePublishToNacosService<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements SmartInitializingSingleton {
@@ -57,12 +61,24 @@ public abstract class BasePublishToNacosService<M extends BaseMapper<T>, T> exte
         }
     }
 
+    /**
+     * 事务提交之后将数据推送到nacos
+     */
+    protected void publishToNaocs() {
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                doPublish();
+            }
+        });
+    }
+
     private void doPublish() {
         pool.execute(() -> {
             String publishDataId = getPublishDataId();
             String publicDataText = getPublishDataText();
             try {
-                nacosConfigManager.getConfigService().publishConfig(publishDataId,  "DEFAULT_GROUP",  publicDataText, ConfigType.JSON.getType());
+                nacosConfigManager.getConfigService().publishConfig(publishDataId,  GROUP_NAME,  publicDataText, ConfigType.JSON.getType());
             } catch (NacosException e) {
                 log.error("推送{}到nacos失败", publishDataId);
             }

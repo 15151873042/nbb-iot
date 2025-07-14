@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static io.github.nbb.iot.common.constants.NacosConfigConstants.IOT_SERIAL_DATA_ID;
+
 /**
  * @author 胡鹏
  */
@@ -21,7 +23,7 @@ public class SerialServerStore extends BaseStore<IotSerialDO> {
 
 
     public SerialServerStore() {
-        super("serial-server.json", IotSerialDO.class);
+        super(IOT_SERIAL_DATA_ID, IotSerialDO.class);
     }
 
     @Override
@@ -32,6 +34,4 @@ public class SerialServerStore extends BaseStore<IotSerialDO> {
 
         nettyConnectionManager.reload(dataList);
     }
-
-
 }
