@@ -9,6 +9,13 @@ export function listPageSerial(query) {
   })
 }
 
+export function listSerialName() {
+  return request({
+    url: '/iot/serial/list-all-name',
+    method: 'get'
+  })
+}
+
 // 查询岗位详细
 export function getSerial(id) {
   return request({

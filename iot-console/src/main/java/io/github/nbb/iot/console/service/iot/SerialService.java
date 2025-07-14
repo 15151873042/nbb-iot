@@ -6,7 +6,10 @@ import io.github.nbb.iot.console.domain.dto.iot.SerialAddSaveDTO;
 import io.github.nbb.iot.console.domain.dto.iot.SerialEditSaveDTO;
 import io.github.nbb.iot.console.domain.dto.iot.SerialPageDTO;
 import io.github.nbb.iot.console.domain.entity.iot.IotSerial;
+import io.github.nbb.iot.console.domain.vo.iot.SerialNameVO;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 网关 Service 接口
@@ -26,4 +29,6 @@ public interface SerialService extends IService<IotSerial> {
 
     @Transactional
     void deleteById(Long id);
+
+    List<SerialNameVO> listAllName();
 }

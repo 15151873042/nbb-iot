@@ -4,16 +4,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 串口服务器
+ * iot产品
  * @author 胡鹏
  */
-@EqualsAndHashCode(of = {"ip", "port"})
 @Data
-public class IotSerialDO {
+public class IotProductDO {
 
     private Long id;
 
-    private String ip;
-
-    private Integer port;
+    private String productName;
 }

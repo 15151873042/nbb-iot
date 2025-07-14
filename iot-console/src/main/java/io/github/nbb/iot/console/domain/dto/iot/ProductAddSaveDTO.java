@@ -1,0 +1,20 @@
+package io.github.nbb.iot.console.domain.dto.iot;
+
+import lombok.Data;
+
+/**
+ * @author 胡鹏
+ */
+@Data
+public class ProductAddSaveDTO {
+    /**
+     * 产品名称
+     */
+    private String productName;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+}
