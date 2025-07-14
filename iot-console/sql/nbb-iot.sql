@@ -11,7 +11,7 @@
  Target Server Version : 80300 (8.3.0)
  File Encoding         : 65001
 
- Date: 10/07/2025 22:04:35
+ Date: 14/07/2025 15:52:43
 */
 
 SET NAMES utf8mb4;
@@ -85,6 +85,27 @@ CREATE TABLE `gen_table_column`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for iot_device
+-- ----------------------------
+DROP TABLE IF EXISTS `iot_device`;
+CREATE TABLE `iot_device`  (
+                               `id` bigint NOT NULL COMMENT 'id',
+                               `device_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '设备名称',
+                               `product_id` bigint NOT NULL COMMENT '产品id',
+                               `serial_id` bigint NOT NULL COMMENT '串口服务器id',
+                               `serial_address_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '串口服务器所在地址码',
+                               `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                               `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+                               `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                               `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+                               PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of iot_device
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for iot_gateway
 -- ----------------------------
 DROP TABLE IF EXISTS `iot_gateway`;
@@ -98,12 +119,32 @@ CREATE TABLE `iot_gateway`  (
                                 `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
                                 `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
                                 PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '网关表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '网关表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of iot_gateway
 -- ----------------------------
-INSERT INTO `iot_gateway` VALUES (1, 'iot-gateway-01', b'0', '', '2025-07-05 19:47:08', NULL, '2025-07-10 21:17:49', NULL);
+INSERT INTO `iot_gateway` VALUES (1, 'iot-gateway-01', b'0', '', '2025-07-05 19:47:08', NULL, '2025-07-14 15:49:14', NULL);
+
+-- ----------------------------
+-- Table structure for iot_product
+-- ----------------------------
+DROP TABLE IF EXISTS `iot_product`;
+CREATE TABLE `iot_product`  (
+                                `id` bigint NOT NULL COMMENT 'id',
+                                `product_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '产品名称',
+                                `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
+                                `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                                `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
+                                `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                                `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+                                PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '产品表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of iot_product
+-- ----------------------------
+INSERT INTO `iot_product` VALUES (1944646216776282113, 'XXX温湿度传感器', 'admin', '2025-07-14 14:32:43', 'admin', '2025-07-14 14:32:43', NULL);
 
 -- ----------------------------
 -- Table structure for iot_serial
@@ -120,7 +161,7 @@ CREATE TABLE `iot_serial`  (
                                `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
                                `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
                                PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '串口表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '串口表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of iot_serial
@@ -458,6 +499,8 @@ INSERT INTO `sys_menu` VALUES (1053, '状态修改', 110, 5, '#', '', '', '', 1,
 INSERT INTO `sys_menu` VALUES (1054, '任务导出', 110, 6, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:export', '#', 'admin', '2025-06-16 08:44:19', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1941348198216204289, '网关管理', 0, 3, 'gateway', 'gateway/index', NULL, '', 1, 0, 'C', '0', '0', 'gateway:list', 'dashboard', 'admin', '2025-07-05 12:07:33', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1941349048779112449, '串口管理', 0, 4, 'serial', 'serial/index', NULL, '', 1, 0, 'C', '0', '0', 'serial:list', 'international', 'admin', '2025-07-05 12:10:56', 'admin', '2025-07-07 21:09:30', '');
+INSERT INTO `sys_menu` VALUES (1944625325146640385, '产品管理', 0, 5, 'product', 'product/index', NULL, '', 1, 0, 'C', '0', '0', 'product:list', 'drag', 'admin', '2025-07-14 13:09:41', 'admin', '2025-07-14 13:10:52', '');
+INSERT INTO `sys_menu` VALUES (1944626255044808705, '设备管理', 0, 6, 'device', 'device/index', NULL, '', 1, 0, 'C', '0', '0', 'device:list', 'documentation', 'admin', '2025-07-14 13:13:23', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_notice
