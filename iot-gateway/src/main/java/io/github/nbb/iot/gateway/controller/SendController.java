@@ -17,7 +17,7 @@ public class SendController {
     public String send(String message, String ip, int port) {
         IotSerialDO serialServerDO = new IotSerialDO();
         serialServerDO.setId("1");
-        serialServerDO.setHost(ip);
+        serialServerDO.setIp(ip);
         serialServerDO.setPort(port);
 
         nettyConnectionManager.sendMessage(serialServerDO, message);

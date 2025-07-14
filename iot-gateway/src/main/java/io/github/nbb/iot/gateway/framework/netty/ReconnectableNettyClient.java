@@ -49,7 +49,7 @@ public class ReconnectableNettyClient {
 
 
     public ReconnectableNettyClient(IotSerialDO serialServerInfo) {
-        this.host = serialServerInfo.getHost();
+        this.host = serialServerInfo.getIp();
         this.port = serialServerInfo.getPort();
         this.heartbeatExecutor = Executors.newSingleThreadScheduledExecutor();
         this.reconnectExecutor = Executors.newSingleThreadScheduledExecutor();
