@@ -85,9 +85,29 @@
 
       <!-- 添加或修改岗位对话框 -->
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-         <el-form ref="saveRef" :model="form" :rules="rules" label-width="80px">
-            <el-form-item label="产品名称" prop="productName">
-               <el-input v-model="form.productName" placeholder="请输入产品名称" />
+         <el-form ref="saveRef" :model="form" :rules="rules" label-width="100px">
+            <el-form-item label="设备名称" prop="deviceName">
+               <el-input v-model="form.deviceName" placeholder="请输入产品名称" />
+            </el-form-item>
+            <el-form-item label="产品名称" prop="productId">
+              <el-select v-model="form.productId" placeholder="产品名称" clearable>
+                <el-option
+                    v-for="item in productOptions"
+                    :key="item.id"
+                    :label="item.productName"
+                    :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="串口服务器" prop="serialId">
+              <el-select v-model="form.serialId" placeholder="串口服务器" clearable>
+                <el-option
+                    v-for="item in serialOptions"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                />
+              </el-select>
             </el-form-item>
          </el-form>
          <template #footer>
@@ -162,7 +182,9 @@ function cancel() {
 function reset() {
   form.value = {
     id: undefined,
-    productName: undefined,
+    deviceName: undefined,
+    productId: undefined,
+    serialId: undefined,
     remark: undefined
   }
   proxy.resetForm("saveRef")
