@@ -87,10 +87,10 @@
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
          <el-form ref="saveRef" :model="form" :rules="rules" label-width="100px">
             <el-form-item label="设备名称" prop="deviceName">
-               <el-input v-model="form.deviceName" placeholder="请输入产品名称" />
+               <el-input v-model="form.deviceName" placeholder="请输入设备名称" />
             </el-form-item>
-            <el-form-item label="产品名称" prop="productId">
-              <el-select v-model="form.productId" placeholder="产品名称" clearable>
+            <el-form-item label="产品类型" prop="productId">
+              <el-select v-model="form.productId" placeholder="产品类型" clearable>
                 <el-option
                     v-for="item in productOptions"
                     :key="item.id"
@@ -99,7 +99,7 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="串口服务器" prop="serialId">
+            <el-form-item label="挂载串口" prop="serialId">
               <el-select v-model="form.serialId" placeholder="串口服务器" clearable>
                 <el-option
                     v-for="item in serialOptions"
@@ -109,6 +109,9 @@
                 />
               </el-select>
             </el-form-item>
+           <el-form-item label="串口地址码" prop="serialAddressCode">
+             <el-input v-model="form.serialAddressCode" placeholder="请输入串口地址码" />
+           </el-form-item>
          </el-form>
          <template #footer>
             <div class="dialog-footer">
@@ -130,7 +133,7 @@ import {
   updateProduct
 } from "@/api/iot/product.js";
 import {listSerialName} from "@/api/iot/serial.js";
-import {listPageDevice} from "@/api/iot/device.js";
+import {addDevice, delDevice, listPageDevice, updateDevice} from "@/api/iot/device.js";
 
 const { proxy } = getCurrentInstance()
 
@@ -155,7 +158,10 @@ const data = reactive({
     productName: undefined,
   },
   rules: {
-    productName: [{ required: true, message: "产品名称不能为空", trigger: "blur" }],
+    deviceName: [{ required: true, message: "设备名称不能为空", trigger: "blur" }],
+    productId: [{ required: true, message: "产品类型不能为空", trigger: "change" }],
+    serialId: [{ required: true, message: "串口服务器不能为空", trigger: "change" }],
+    serialAddressCode: [{ required: true, message: "串口地址码不能为空", trigger: "blur" }],
   }
 })
 
@@ -185,6 +191,7 @@ function reset() {
     deviceName: undefined,
     productId: undefined,
     serialId: undefined,
+    serialAddressCode: undefined,
     remark: undefined
   }
   proxy.resetForm("saveRef")
@@ -234,13 +241,13 @@ function submitForm() {
   proxy.$refs["saveRef"].validate(valid => {
     if (valid) {
       if (form.value.id != undefined) {
-        updateProduct(form.value).then(response => {
+        updateDevice(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
           getList()
         })
       } else {
-        addProduct(form.value).then(response => {
+        addDevice(form.value).then(response => {
           proxy.$modal.msgSuccess("新增成功")
           open.value = false
           getList()
@@ -254,7 +261,7 @@ function submitForm() {
 function handleDelete(row) {
   const idList = row.id || ids.value
   proxy.$modal.confirm('是否确认删除岗位编号为"' + idList + '"的数据项？').then(function() {
-    return delProduct(idList)
+    return delDevice(idList)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("删除成功")
