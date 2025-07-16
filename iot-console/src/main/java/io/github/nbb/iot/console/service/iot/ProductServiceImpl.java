@@ -8,14 +8,18 @@ import io.github.nbb.iot.console.domain.dto.iot.ProductAddSaveDTO;
 import io.github.nbb.iot.console.domain.dto.iot.ProductEditSaveDTO;
 import io.github.nbb.iot.console.domain.dto.iot.ProductPageDTO;
 import io.github.nbb.iot.console.domain.entity.iot.IotProduct;
+import io.github.nbb.iot.console.domain.entity.iot.IotSerial;
 import io.github.nbb.iot.console.domain.vo.iot.ProductPageVO;
 import io.github.nbb.iot.console.framework.mybatisplus.LambdaQueryWrapperX;
 import io.github.nbb.iot.console.mapper.iot.IotProductMapper;
 import io.github.nbb.iot.console.util.BeanUtil;
+import io.github.nbb.iot.console.util.CollUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static io.github.nbb.iot.common.constants.NacosConfigConstants.IOT_PRODUCT_DATA_ID;
 
@@ -61,6 +65,15 @@ public class ProductServiceImpl extends BasePublishToNacosService<IotProductMapp
         productMapper.deleteById(id);
 
         this.publishToNaocs();
+    }
+
+    @Override
+    public Map<Long, String> getNameMap(List<Long> productIds) {
+        LambdaQueryWrapper<IotProduct> queryWrapper = new LambdaQueryWrapperX<IotProduct>()
+                .in(IotProduct::getId, productIds)
+                .select(IotProduct::getId, IotProduct::getProductName);
+        List<IotProduct> productList = productMapper.selectList(queryWrapper);
+        return CollUtil.convertMap(productList, IotProduct::getId, IotProduct::getProductName);
     }
 
     @Override

@@ -16,12 +16,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class IotDevice extends BaseEntity {
-    /**
-     * 设备名称
-     */
     private String deviceName;
 
     private Long productId;
 
     private Long serialId;
+
+    private String serialAddressCode;
 }

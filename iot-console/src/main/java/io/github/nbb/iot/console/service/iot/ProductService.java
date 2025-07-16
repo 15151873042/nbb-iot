@@ -8,6 +8,9 @@ import io.github.nbb.iot.console.domain.entity.iot.IotSerial;
 import io.github.nbb.iot.console.domain.vo.iot.ProductPageVO;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 网关 Service 接口
  *
@@ -26,4 +29,6 @@ public interface ProductService extends IService<IotProduct> {
 
     @Transactional
     void deleteById(Long id);
+
+    Map<Long, String> getNameMap(List<Long> productIds);
 }

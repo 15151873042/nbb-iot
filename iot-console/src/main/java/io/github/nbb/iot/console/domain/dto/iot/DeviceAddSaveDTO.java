@@ -7,18 +7,14 @@ import lombok.Data;
  */
 @Data
 public class DeviceAddSaveDTO {
-    /**
-     * 设备名称
-     */
     private String deviceName;
 
     private Long productId;
 
     private Long serialId;
 
-    /**
-     * 备注
-     */
+    private String serialAddressCode;
+
     private String remark;
 
 }

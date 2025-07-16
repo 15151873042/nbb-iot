@@ -62,6 +62,9 @@
          <el-table-column type="selection" width="55" align="center" />
          <el-table-column label="设备ID" align="center" prop="id" />
          <el-table-column label="设备名称" align="center" prop="deviceName"/>
+         <el-table-column label="所属产品" align="center" prop="productName"/>
+         <el-table-column label="所属串口" align="center" prop="serialName"/>
+         <el-table-column label="地址码" align="center" prop="serialAddressCode"/>
          <el-table-column label="创建时间" align="center" prop="createTime" width="180">
             <template #default="scope">
                <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -133,7 +136,7 @@ import {
   updateProduct
 } from "@/api/iot/product.js";
 import {listSerialName} from "@/api/iot/serial.js";
-import {addDevice, delDevice, listPageDevice, updateDevice} from "@/api/iot/device.js";
+import {addDevice, delDevice, getDevice, listPageDevice, updateDevice} from "@/api/iot/device.js";
 
 const { proxy } = getCurrentInstance()
 
@@ -222,17 +225,17 @@ function handleAdd() {
   getSerialSelect()
   getProductSelect()
   open.value = true
-  title.value = "添加串口"
+  title.value = "添加设备"
 }
 
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset()
   const id = row.id || ids.value
-  getProduct(id).then(response => {
+  getDevice(id).then(response => {
     form.value = response.data
     open.value = true
-    title.value = "修改岗位"
+    title.value = "修改设备"
   })
 }
 

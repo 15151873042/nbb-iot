@@ -10,6 +10,8 @@ import io.github.nbb.iot.console.domain.vo.iot.SerialNameVO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 网关 Service 接口
@@ -31,4 +33,6 @@ public interface SerialService extends IService<IotSerial> {
     void deleteById(Long id);
 
     List<SerialNameVO> listAllName();
+
+    Map<Long, String> getNameMap(List<Long> serialIds);
 }

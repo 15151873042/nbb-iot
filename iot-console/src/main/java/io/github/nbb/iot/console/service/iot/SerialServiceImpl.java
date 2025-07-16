@@ -12,10 +12,13 @@ import io.github.nbb.iot.console.domain.vo.iot.SerialNameVO;
 import io.github.nbb.iot.console.framework.mybatisplus.LambdaQueryWrapperX;
 import io.github.nbb.iot.console.mapper.iot.IotSerialMapper;
 import io.github.nbb.iot.console.util.BeanUtil;
+import io.github.nbb.iot.console.util.CollUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.github.nbb.iot.common.constants.NacosConfigConstants.IOT_SERIAL_DATA_ID;
@@ -72,10 +75,23 @@ public class SerialServiceImpl extends BasePublishToNacosService<IotSerialMapper
                 .map(iotSerial -> {
                     SerialNameVO vo = new SerialNameVO();
                     vo.setId(iotSerial.getId());
-                    vo.setName(String.join(":" , iotSerial.getIp(), String.valueOf(iotSerial.getPort())));
+                    vo.setName(this.getSerialName(iotSerial));
                     return vo;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<Long, String> getNameMap(List<Long> serialIds) {
+        LambdaQueryWrapper<IotSerial> queryWrapper = new LambdaQueryWrapperX<IotSerial>()
+                .in(IotSerial::getId, serialIds)
+                .select(IotSerial::getId, IotSerial::getIp, IotSerial::getPort);
+        List<IotSerial> serialList = serialMapper.selectList(queryWrapper);
+        return CollUtil.convertMap(serialList, IotSerial::getId, this::getSerialName);
+    }
+
+    private String getSerialName(IotSerial iotSerial) {
+        return String.join(":" , iotSerial.getIp(), String.valueOf(iotSerial.getPort()));
     }
 
     @Override

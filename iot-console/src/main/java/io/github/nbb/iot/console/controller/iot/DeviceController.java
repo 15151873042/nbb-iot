@@ -6,6 +6,7 @@ import io.github.nbb.iot.console.domain.dto.iot.DeviceAddSaveDTO;
 import io.github.nbb.iot.console.domain.dto.iot.DeviceEditSaveDTO;
 import io.github.nbb.iot.console.domain.dto.iot.DevicePageDTO;
 import io.github.nbb.iot.console.domain.entity.iot.IotDevice;
+import io.github.nbb.iot.console.domain.vo.iot.DevicePageVO;
 import io.github.nbb.iot.console.service.iot.DeviceService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class DeviceController {
      */
     @GetMapping("/page")
     public AjaxResult list(DevicePageDTO dto) {
-        PageResult<IotDevice> result = deviceService.listPage(dto);
+        PageResult<DevicePageVO> result = deviceService.listPage(dto);
         return AjaxResult.success(result);
     }
 

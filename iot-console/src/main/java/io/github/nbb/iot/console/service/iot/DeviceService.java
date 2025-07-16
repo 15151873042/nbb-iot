@@ -5,6 +5,7 @@ import io.github.nbb.iot.console.domain.PageResult;
 import io.github.nbb.iot.console.domain.dto.iot.*;
 import io.github.nbb.iot.console.domain.entity.iot.IotDevice;
 import io.github.nbb.iot.console.domain.entity.iot.IotProduct;
+import io.github.nbb.iot.console.domain.vo.iot.DevicePageVO;
 import io.github.nbb.iot.console.domain.vo.iot.ProductPageVO;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface DeviceService extends IService<IotDevice> {
 
 
-    PageResult<IotDevice> listPage(DevicePageDTO dto);
+    PageResult<DevicePageVO> listPage(DevicePageDTO dto);
 
     @Transactional
     void addSave(DeviceAddSaveDTO dto);
