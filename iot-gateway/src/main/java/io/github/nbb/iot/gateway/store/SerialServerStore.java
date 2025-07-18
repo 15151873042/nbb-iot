@@ -16,7 +16,7 @@ import static io.github.nbb.iot.common.constants.NacosConfigConstants.IOT_SERIAL
 @Component
 public class SerialServerStore extends BaseStore<IotSerialDO> {
 
-    private final ConcurrentHashMap<String, IotSerialDO> id2Entity = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, IotSerialDO> id2Entity = new ConcurrentHashMap<>();
 
     @Autowired
     private NettyConnectionManager nettyConnectionManager;

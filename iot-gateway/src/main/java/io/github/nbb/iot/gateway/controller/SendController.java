@@ -16,7 +16,7 @@ public class SendController {
     @RequestMapping("/send")
     public String send(String message, String ip, int port) {
         IotSerialDO serialServerDO = new IotSerialDO();
-        serialServerDO.setId("1");
+        serialServerDO.setId(1L);
         serialServerDO.setIp(ip);
         serialServerDO.setPort(port);
 

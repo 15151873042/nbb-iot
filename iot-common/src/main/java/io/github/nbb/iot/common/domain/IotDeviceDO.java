@@ -11,12 +11,11 @@ public class IotDeviceDO {
 
     private Long id;
 
-    /**
-     * 设备名称
-     */
     private String deviceName;
 
     private Long productId;
 
     private Long serialId;
+
+    private String serialAddressCode;
 }
