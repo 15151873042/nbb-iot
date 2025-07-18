@@ -231,6 +231,8 @@ function handleAdd() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset()
+  getSerialSelect()
+  getProductSelect()
   const id = row.id || ids.value
   getDevice(id).then(response => {
     form.value = response.data
