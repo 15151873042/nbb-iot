@@ -59,9 +59,20 @@
       </el-row>
 
       <el-table v-loading="loading" :data="serialList" @selection-change="handleSelectionChange">
-         <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="产品ID" align="center" prop="id" />
-         <el-table-column label="产品名称" align="center" prop="productName"/>
+        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column label="产品ID" align="center" prop="id" />
+        <el-table-column label="产品名称" align="center" prop="productName"/>
+        <el-table-column label="采集间隔" align="center" prop="collectInterval"/>
+        <el-table-column label="状态" align="center" key="status">
+          <template #default="scope">
+            <el-switch
+            v-model="scope.row.status"
+            active-value="0"
+            inactive-value="1"
+            @change="handleStatusChange(scope.row)"
+            />
+          </template>
+        </el-table-column>
          <el-table-column label="创建时间" align="center" prop="createTime" width="180">
             <template #default="scope">
                <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -223,6 +234,18 @@ function handleDelete(row) {
     getList()
     proxy.$modal.msgSuccess("删除成功")
   }).catch(() => {})
+}
+
+/** 用户状态修改  */
+function handleStatusChange(row) {
+  let text = row.status === "0" ? "启用" : "停用"
+  proxy.$modal.confirm('确认要"' + text + '""' + row.userName + '"产品吗?').then(function () {
+    return changeUserStatus(row.id, row.status)
+  }).then(() => {
+    proxy.$modal.msgSuccess(text + "成功")
+  }).catch(function () {
+    row.status = row.status === "0" ? "1" : "0"
+  })
 }
 
 /** 导出按钮操作 */

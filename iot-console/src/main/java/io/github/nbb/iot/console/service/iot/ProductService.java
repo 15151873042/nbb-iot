@@ -2,6 +2,7 @@ package io.github.nbb.iot.console.service.iot;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.github.nbb.iot.console.domain.PageResult;
+import io.github.nbb.iot.console.domain.dto.CommonUpdateStatusDTO;
 import io.github.nbb.iot.console.domain.dto.iot.*;
 import io.github.nbb.iot.console.domain.entity.iot.IotProduct;
 import io.github.nbb.iot.console.domain.entity.iot.IotSerial;
@@ -31,4 +32,7 @@ public interface ProductService extends IService<IotProduct> {
     void deleteById(Long id);
 
     Map<Long, String> getNameMap(List<Long> productIds);
+
+    @Transactional
+    void updateStatus(CommonUpdateStatusDTO dto);
 }

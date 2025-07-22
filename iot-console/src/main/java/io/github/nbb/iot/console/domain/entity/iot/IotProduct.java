@@ -21,5 +21,15 @@ public class IotProduct extends BaseEntity {
      */
     private String productName;
 
+    /**
+     * 采集间隔（单位秒）
+     */
+    private Integer collectInterval;
+
+    /**
+     * 状态（0正常 1停用）
+     */
+    private String status;
+
 
 }

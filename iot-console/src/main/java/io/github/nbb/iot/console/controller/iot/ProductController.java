@@ -2,6 +2,7 @@ package io.github.nbb.iot.console.controller.iot;
 
 import io.github.nbb.iot.console.domain.AjaxResult;
 import io.github.nbb.iot.console.domain.PageResult;
+import io.github.nbb.iot.console.domain.dto.CommonUpdateStatusDTO;
 import io.github.nbb.iot.console.domain.dto.iot.*;
 import io.github.nbb.iot.console.domain.entity.iot.IotProduct;
 import io.github.nbb.iot.console.domain.entity.iot.IotSerial;
@@ -24,7 +25,7 @@ public class ProductController {
     private ProductService productService;
 
     /**
-     * 获取岗位列表
+     * 列表
      */
     @GetMapping("/page")
     public AjaxResult list(ProductPageDTO dto) {
@@ -40,7 +41,7 @@ public class ProductController {
 
 
     /**
-     * 新增
+     * 详情
      */
     @GetMapping("/get/{id}")
     public AjaxResult get(@PathVariable("id") Long id) {
@@ -63,6 +64,12 @@ public class ProductController {
     @PutMapping("/edit/save")
     public AjaxResult add(@Validated @RequestBody ProductEditSaveDTO dto) {
         productService.editSave(dto);
+        return AjaxResult.success(true);
+    }
+
+    @PutMapping("/update-status")
+    public AjaxResult add(@Validated @RequestBody CommonUpdateStatusDTO dto) {
+        productService.updateStatus(dto);
         return AjaxResult.success(true);
     }
 

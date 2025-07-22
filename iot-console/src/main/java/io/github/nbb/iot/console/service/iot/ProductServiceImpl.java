@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.github.nbb.iot.common.domain.IotProductDO;
 import io.github.nbb.iot.console.domain.PageResult;
+import io.github.nbb.iot.console.domain.dto.CommonUpdateStatusDTO;
 import io.github.nbb.iot.console.domain.dto.iot.ProductAddSaveDTO;
 import io.github.nbb.iot.console.domain.dto.iot.ProductEditSaveDTO;
 import io.github.nbb.iot.console.domain.dto.iot.ProductPageDTO;
@@ -74,6 +75,12 @@ public class ProductServiceImpl extends BasePublishToNacosService<IotProductMapp
                 .select(IotProduct::getId, IotProduct::getProductName);
         List<IotProduct> productList = productMapper.selectList(queryWrapper);
         return CollUtil.convertMap(productList, IotProduct::getId, IotProduct::getProductName);
+    }
+
+    @Override
+    public void updateStatus(CommonUpdateStatusDTO dto) {
+        IotProduct updateObject = BeanUtil.copyProperties(dto, IotProduct.class);
+
     }
 
     @Override
