@@ -15,6 +15,11 @@ public class ProductEditSaveDTO {
     private String productName;
 
     /**
+     * 采集间隔（单位秒）
+     */
+    private Integer collectInterval;
+
+    /**
      * 备注
      */
     private String remark;

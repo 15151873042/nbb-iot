@@ -44,3 +44,13 @@ export function delProduct(id) {
     method: 'delete'
   })
 }
+
+// 用户状态修改
+export function updateProductStatus(id, status) {
+  const data = { id, status }
+  return request({
+    url: '/iot/product/update-status',
+    method: 'put',
+    data: data
+  })
+}

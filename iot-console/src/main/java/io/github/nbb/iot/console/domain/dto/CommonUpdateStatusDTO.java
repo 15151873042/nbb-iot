@@ -1,8 +1,11 @@
 package io.github.nbb.iot.console.domain.dto;
 
+import lombok.Data;
+
 /**
  * @author 胡鹏
  */
+@Data
 public class CommonUpdateStatusDTO {
 
     private Long id;

@@ -119,6 +119,12 @@
             <artifactId>iot-grpc-api</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <!-- Quartz 整合 Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

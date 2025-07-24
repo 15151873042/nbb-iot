@@ -100,6 +100,13 @@
             <el-form-item label="产品名称" prop="productName">
                <el-input v-model="form.productName" placeholder="请输入产品名称" />
             </el-form-item>
+            <el-form-item label="采集频率" prop="collectInterval">
+              <el-input-number v-model="form.collectInterval" :min="5" style="width:100%">
+                <template #suffix>
+                  <span>秒/次</span>
+                </template>
+              </el-input-number>
+            </el-form-item>
          </el-form>
          <template #footer>
             <div class="dialog-footer">
@@ -112,7 +119,14 @@
 </template>
 
 <script setup name="Post">
-import {addProduct, delProduct, getProduct, listPageProduct, updateProduct} from "@/api/iot/product.js";
+import {
+  addProduct,
+  delProduct,
+  getProduct,
+  listPageProduct,
+  updateProduct,
+  updateProductStatus
+} from "@/api/iot/product.js";
 
 const { proxy } = getCurrentInstance()
 
@@ -132,9 +146,11 @@ const data = reactive({
     pageNo: 1,
     pageSize: 10,
     productName: undefined,
+    collectInterval: undefined,
   },
   rules: {
     productName: [{ required: true, message: "产品名称不能为空", trigger: "blur" }],
+    collectInterval: [{ required: true, message: "采集频率不能为空", trigger: "blur" }],
   }
 })
 
@@ -239,8 +255,8 @@ function handleDelete(row) {
 /** 用户状态修改  */
 function handleStatusChange(row) {
   let text = row.status === "0" ? "启用" : "停用"
-  proxy.$modal.confirm('确认要"' + text + '""' + row.userName + '"产品吗?').then(function () {
-    return changeUserStatus(row.id, row.status)
+  proxy.$modal.confirm('确认要"' + text + '""' + row.productName + '"产品吗?').then(function () {
+    return updateProductStatus(row.id, row.status)
   }).then(() => {
     proxy.$modal.msgSuccess(text + "成功")
   }).catch(function () {

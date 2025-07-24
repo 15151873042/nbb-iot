@@ -80,7 +80,7 @@ public class ProductServiceImpl extends BasePublishToNacosService<IotProductMapp
     @Override
     public void updateStatus(CommonUpdateStatusDTO dto) {
         IotProduct updateObject = BeanUtil.copyProperties(dto, IotProduct.class);
-
+        productMapper.updateById(updateObject);
     }
 
     @Override
