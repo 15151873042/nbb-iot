@@ -14,7 +14,7 @@ import static io.github.nbb.iot.common.constants.NacosConfigConstants.IOT_SERIAL
  * @author 胡鹏
  */
 @Component
-public class SerialServerStore extends BaseStore<IotSerialDO> {
+public class SerialStore extends BaseStore<IotSerialDO> {
 
     private final ConcurrentHashMap<Long, IotSerialDO> id2Entity = new ConcurrentHashMap<>();
 
@@ -22,7 +22,7 @@ public class SerialServerStore extends BaseStore<IotSerialDO> {
     private NettyConnectionManager nettyConnectionManager;
 
 
-    public SerialServerStore() {
+    public SerialStore() {
         super(IOT_SERIAL_DATA_ID, IotSerialDO.class);
     }
 
@@ -33,5 +33,9 @@ public class SerialServerStore extends BaseStore<IotSerialDO> {
         dataList.forEach(item -> id2Entity.put(item.getId(), item));
 
         nettyConnectionManager.reload(dataList);
+    }
+
+    public IotSerialDO getBySerialId(Long serialId) {
+        return id2Entity.get(serialId);
     }
 }
