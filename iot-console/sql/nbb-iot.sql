@@ -11,7 +11,7 @@
  Target Server Version : 80300 (8.3.0)
  File Encoding         : 65001
 
- Date: 14/07/2025 15:52:43
+ Date: 30/07/2025 16:48:26
 */
 
 SET NAMES utf8mb4;
@@ -94,6 +94,7 @@ CREATE TABLE `iot_device`  (
                                `product_id` bigint NOT NULL COMMENT '产品id',
                                `serial_id` bigint NOT NULL COMMENT '串口服务器id',
                                `serial_address_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '串口服务器所在地址码',
+                               `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
                                `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
                                `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
                                `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
@@ -104,6 +105,7 @@ CREATE TABLE `iot_device`  (
 -- ----------------------------
 -- Records of iot_device
 -- ----------------------------
+INSERT INTO `iot_device` VALUES (1945064075847557121, '第一个传感器', 1944646216776282113, 1, '02', 'admin', '2025-07-15 18:13:08', NULL, '2025-07-16 11:24:07', NULL);
 
 -- ----------------------------
 -- Table structure for iot_gateway
@@ -124,7 +126,7 @@ CREATE TABLE `iot_gateway`  (
 -- ----------------------------
 -- Records of iot_gateway
 -- ----------------------------
-INSERT INTO `iot_gateway` VALUES (1, 'iot-gateway-01', b'0', '', '2025-07-05 19:47:08', NULL, '2025-07-14 15:49:14', NULL);
+INSERT INTO `iot_gateway` VALUES (1, 'iot-gateway-01', b'1', '', '2025-07-05 19:47:08', NULL, '2025-07-30 15:16:03', NULL);
 
 -- ----------------------------
 -- Table structure for iot_product
@@ -133,6 +135,8 @@ DROP TABLE IF EXISTS `iot_product`;
 CREATE TABLE `iot_product`  (
                                 `id` bigint NOT NULL COMMENT 'id',
                                 `product_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '产品名称',
+                                `collect_interval` int NOT NULL DEFAULT 30 COMMENT '数据采集间隔（单位：秒）',
+                                `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
                                 `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
                                 `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
                                 `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
@@ -144,7 +148,7 @@ CREATE TABLE `iot_product`  (
 -- ----------------------------
 -- Records of iot_product
 -- ----------------------------
-INSERT INTO `iot_product` VALUES (1944646216776282113, 'XXX温湿度传感器', 'admin', '2025-07-14 14:32:43', 'admin', '2025-07-14 14:32:43', NULL);
+INSERT INTO `iot_product` VALUES (1944646216776282113, 'XXX温湿度传感器', 30, '0', 'admin', '2025-07-14 14:32:43', NULL, '2025-07-30 15:16:15', NULL);
 
 -- ----------------------------
 -- Table structure for iot_serial
