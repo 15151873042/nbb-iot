@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: iot-gateway
+  main:
+    allow-circular-references: true
 
 iot-gateway:
   client-id: iot-gateway-01
@@ -21,4 +23,3 @@ logging:
   file:
     name: ${spring.application.name}
     path: d:\logs\
-

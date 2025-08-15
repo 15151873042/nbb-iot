@@ -63,6 +63,15 @@
 
 
     <dependencies>
+
+
+        <!-- 动态执行java脚本 -->
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>3.1.8</version> <!-- 最新稳定版，可根据需要更新 -->
+        </dependency>
+
         <dependency>
             <groupId>io.github.nbb.iot</groupId>
             <artifactId>iot-common</artifactId>

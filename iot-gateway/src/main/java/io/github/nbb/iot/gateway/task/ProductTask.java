@@ -5,12 +5,15 @@ import io.github.nbb.iot.common.domain.IotProductDO;
 import io.github.nbb.iot.common.domain.IotSerialDO;
 import io.github.nbb.iot.gateway.framework.netty.NettyConnectionManager;
 import io.github.nbb.iot.gateway.store.DeviceStore;
+import io.github.nbb.iot.gateway.store.ProductStore;
 import io.github.nbb.iot.gateway.store.SerialStore;
 import lombok.extern.slf4j.Slf4j;
+import org.codehaus.janino.SimpleCompiler;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -27,6 +30,8 @@ public class ProductTask implements Job {
     private DeviceStore deviceStore;
     @Autowired
     private SerialStore serialStore;
+    @Autowired
+    private ProductStore productStore;
     @Autowired
     private NettyConnectionManager nettyConnectionManager;
 
@@ -93,14 +98,39 @@ public class ProductTask implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
         Long productId = (Long) jobExecutionContext.getJobDetail().getJobDataMap().get(PRODUCT_ID_KEY);
-        // 获取产品下的所有设备
-        List<IotDeviceDO> deviceList = deviceStore.listByProductId(productId);
-        for (IotDeviceDO deviceDO : deviceList) {
-            // 获取设备所绑定的串口
-            IotSerialDO serial = serialStore.getBySerialId(deviceDO.getSerialId());
-            // 对指定串口发送信息
-            nettyConnectionManager.sendMessage(serial, "");
-        }
         log.info("产品id为{}的设备扫描任务开始执行", productId);
+
+        IotProductDO productDO = productStore.getById(productId);
+        // 1、编译动态脚本类
+        Object dynamicClientInstance;
+        Method dynamicClientMethod;
+        try {
+            SimpleCompiler compiler = new SimpleCompiler();
+            compiler.cook(productDO.getDynamicCode());
+            Class<?> dynamicClass = compiler.getClassLoader().loadClass("com.dynamic.DynamicSocketClient");
+            dynamicClientInstance = dynamicClass.newInstance();
+            dynamicClientMethod = dynamicClass.getMethod("sendMessage", String.class, int.class, String.class);
+        } catch (Exception e) {
+            log.error("产品id为{}的脚本加载失败", productId);
+            return;
+        }
+
+
+        // 2、获取产品下的所有设备
+        List<IotDeviceDO> deviceList = deviceStore.listByProductId(productId);
+
+        for (IotDeviceDO deviceDO : deviceList) {
+            // 3、获取设备所绑定的串口
+            IotSerialDO serial = serialStore.getBySerialId(deviceDO.getSerialId());
+            try {
+                // 4. 给设备发送消息
+                String response = (String) dynamicClientMethod.invoke(dynamicClientInstance, serial.getIp(), serial.getPort(), deviceDO.getSerialAddressCode());
+                System.out.println(response);
+            } catch (Exception e) {
+                log.error("产品id为{}的设备扫描任务执行失败", productId);
+                log.error(e.getMessage(), e);
+            }
+        }
+
     }
 }

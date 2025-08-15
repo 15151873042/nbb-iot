@@ -14,6 +14,11 @@ public class IotProductDO {
     private String productName;
 
     /**
+     * 动态脚本代码
+     */
+    private String dynamicCode;
+
+    /**
      * 采集间隔（单位秒）
      */
     private Integer collectInterval;
