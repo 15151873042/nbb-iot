@@ -1,5 +1,6 @@
 package io.github.nbb.iot.gateway.task;
 
+import cn.hutool.core.util.ReUtil;
 import io.github.nbb.iot.common.domain.IotDeviceDO;
 import io.github.nbb.iot.common.domain.IotProductDO;
 import io.github.nbb.iot.common.domain.IotSerialDO;
@@ -95,6 +96,7 @@ public class ProductTask implements Job {
         return jobDetail;
     }
 
+
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
         Long productId = (Long) jobExecutionContext.getJobDetail().getJobDataMap().get(PRODUCT_ID_KEY);
@@ -107,9 +109,10 @@ public class ProductTask implements Job {
         try {
             SimpleCompiler compiler = new SimpleCompiler();
             compiler.cook(productDO.getDynamicCode());
-            Class<?> dynamicClass = compiler.getClassLoader().loadClass("com.dynamic.DynamicSocketClient");
+            String className = this.getFullClassName(productDO.getDynamicCode());
+            Class<?> dynamicClass = compiler.getClassLoader().loadClass(className);
             dynamicClientInstance = dynamicClass.newInstance();
-            dynamicClientMethod = dynamicClass.getMethod("sendMessage", String.class, int.class, String.class);
+            dynamicClientMethod = dynamicClass.getMethod(DYNAMIC_CODE_METHOD_NAME, String.class, int.class, String.class);
         } catch (Exception e) {
             log.error("产品id为{}的脚本加载失败", productId);
             return;
@@ -132,5 +135,23 @@ public class ProductTask implements Job {
             }
         }
 
+    }
+
+
+
+    private static final String DYNAMIC_CODE_METHOD_NAME = "sendMessage";
+
+    private String getFullClassName(String dynamicCode) {
+
+        // 1. 提取包名（匹配 package 后的内容，直到分号）
+        String packageRegex = "package (.*?);";
+        String packageName = ReUtil.get(packageRegex, dynamicCode, 1);
+
+        // 2. 提取类名（匹配 public class 后的内容，直到空格）
+        String classRegex = "public class (\\w+)\\s*.*";
+        String className = ReUtil.get(classRegex, dynamicCode, 1);
+
+        // 3. 拼接完整类名
+        return packageName + "." + className;
     }
 }

@@ -95,7 +95,7 @@
       />
 
       <!-- 添加或修改岗位对话框 -->
-      <el-dialog :title="title" v-model="open" width="500px" append-to-body>
+      <el-dialog :title="title" v-model="open" width="60%" append-to-body>
          <el-form ref="saveRef" :model="form" :rules="rules" label-width="80px">
             <el-form-item label="产品名称" prop="productName">
                <el-input v-model="form.productName" placeholder="请输入产品名称" />
@@ -111,12 +111,10 @@
               <codemirror
                   v-model="form.dynamicCode"
                   placeholder="请输入采集代码。。。"
-                  :style="{ height: '400px', width: '100%'}"
+                  :style="{ height: '500px', width: '100%'}"
                   :autofocus="true"
-                  :indent-with-tab="true"
-                  :tab-size="2"
+                  :tab-size="4"
                   :extensions="extensions"
-                  @ready="handleReady"
               />
             </el-form-item>
          </el-form>
@@ -140,10 +138,9 @@ import {
   updateProductStatus
 } from "@/api/iot/product.js";
 
-import { Codemirror } from 'vue-codemirror'
-import { java } from '@codemirror/lang-java'
-import { oneDark } from '@codemirror/theme-one-dark'
-import {shallowRef} from "vue";
+import {Codemirror} from 'vue-codemirror'
+import {java} from '@codemirror/lang-java'
+import {oneDark} from '@codemirror/theme-one-dark'
 
 const { proxy } = getCurrentInstance()
 
@@ -178,13 +175,6 @@ const extensions = [
   java(),
   oneDark
 ]
-
-// Codemirror EditorView instance ref
-const view = shallowRef()
-const handleReady = (payload) => {
-  view.value = payload.view
-}
-
 
 /** 查询岗位列表 */
 function getList() {
