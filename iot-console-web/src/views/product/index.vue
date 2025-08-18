@@ -110,7 +110,7 @@
             <el-form-item label="采集代码" prop="collectInterval">
               <codemirror
                   v-model="form.dynamicCode"
-                  placeholder="Code goes here..."
+                  placeholder="请输入采集代码。。。"
                   :style="{ height: '400px', width: '100%'}"
                   :autofocus="true"
                   :indent-with-tab="true"
@@ -236,7 +236,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset()
   open.value = true
-  title.value = "添加串口"
+  title.value = "添加产品"
 }
 
 /** 修改按钮操作 */
@@ -246,7 +246,7 @@ function handleUpdate(row) {
   getProduct(id).then(response => {
     form.value = response.data
     open.value = true
-    title.value = "修改岗位"
+    title.value = "修改产品"
   })
 }
 
