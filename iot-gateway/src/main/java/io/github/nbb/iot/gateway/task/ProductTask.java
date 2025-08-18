@@ -1,5 +1,6 @@
 package io.github.nbb.iot.gateway.task;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReUtil;
 import io.github.nbb.iot.common.domain.IotDeviceDO;
 import io.github.nbb.iot.common.domain.IotProductDO;
@@ -102,8 +103,15 @@ public class ProductTask implements Job {
         Long productId = (Long) jobExecutionContext.getJobDetail().getJobDataMap().get(PRODUCT_ID_KEY);
         log.info("产品id为{}的设备扫描任务开始执行", productId);
 
+        // 1、获取产品下的所有设备
+        List<IotDeviceDO> deviceList = deviceStore.listByProductId(productId);
+        if (CollUtil.isEmpty(deviceList)) {
+            log.info("产品id为{}下无设备，扫描任务结束", productId);
+            return;
+        }
+
         IotProductDO productDO = productStore.getById(productId);
-        // 1、编译动态脚本类
+        // 2、编译动态脚本类
         Object dynamicClientInstance;
         Method dynamicClientMethod;
         try {
@@ -118,15 +126,12 @@ public class ProductTask implements Job {
             return;
         }
 
-
-        // 2、获取产品下的所有设备
-        List<IotDeviceDO> deviceList = deviceStore.listByProductId(productId);
-
+        // 3、循环对每个设备发送消息
         for (IotDeviceDO deviceDO : deviceList) {
-            // 3、获取设备所绑定的串口
+            // 4、获取设备所绑定的串口
             IotSerialDO serial = serialStore.getBySerialId(deviceDO.getSerialId());
             try {
-                // 4. 给设备发送消息
+                // 5. 给设备发送消息
                 String response = (String) dynamicClientMethod.invoke(dynamicClientInstance, serial.getIp(), serial.getPort(), deviceDO.getSerialAddressCode());
                 System.out.println(response);
             } catch (Exception e) {
