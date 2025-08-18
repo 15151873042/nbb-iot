@@ -27,6 +27,11 @@ public class IotProduct extends BaseEntity {
     private Integer collectInterval;
 
     /**
+     * 动态脚本代码
+     */
+    private String dynamicCode;
+
+    /**
      * 状态（0正常 1停用）
      */
     private String status;

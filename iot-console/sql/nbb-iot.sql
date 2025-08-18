@@ -136,6 +136,7 @@ CREATE TABLE `iot_product`  (
                                 `id` bigint NOT NULL COMMENT 'id',
                                 `product_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '产品名称',
                                 `collect_interval` int NOT NULL DEFAULT 30 COMMENT '数据采集间隔（单位：秒）',
+                                `dynamic_code` text null comment '动态脚本代码',
                                 `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
                                 `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
                                 `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',

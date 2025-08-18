@@ -107,6 +107,18 @@
                 </template>
               </el-input-number>
             </el-form-item>
+            <el-form-item label="采集代码" prop="collectInterval">
+              <codemirror
+                  v-model="form.dynamicCode"
+                  placeholder="Code goes here..."
+                  :style="{ height: '400px', width: '100%'}"
+                  :autofocus="true"
+                  :indent-with-tab="true"
+                  :tab-size="2"
+                  :extensions="extensions"
+                  @ready="handleReady"
+              />
+            </el-form-item>
          </el-form>
          <template #footer>
             <div class="dialog-footer">
@@ -128,6 +140,11 @@ import {
   updateProductStatus
 } from "@/api/iot/product.js";
 
+import { Codemirror } from 'vue-codemirror'
+import { java } from '@codemirror/lang-java'
+import { oneDark } from '@codemirror/theme-one-dark'
+import {shallowRef} from "vue";
+
 const { proxy } = getCurrentInstance()
 
 const serialList = ref([])
@@ -147,6 +164,7 @@ const data = reactive({
     pageSize: 10,
     productName: undefined,
     collectInterval: undefined,
+    dynamicCode: undefined
   },
   rules: {
     productName: [{ required: true, message: "产品名称不能为空", trigger: "blur" }],
@@ -155,6 +173,18 @@ const data = reactive({
 })
 
 const { queryParams, form, rules } = toRefs(data)
+
+const extensions = [
+  java(),
+  oneDark
+]
+
+// Codemirror EditorView instance ref
+const view = shallowRef()
+const handleReady = (payload) => {
+  view.value = payload.view
+}
+
 
 /** 查询岗位列表 */
 function getList() {

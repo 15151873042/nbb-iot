@@ -18,6 +18,11 @@ public class ProductAddSaveDTO {
     private Integer collectInterval;
 
     /**
+     * 动态脚本代码
+     */
+    private String dynamicCode;
+
+    /**
      * 备注
      */
     private String remark;
